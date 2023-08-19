@@ -52,14 +52,14 @@ git pull upstream main
 
 ### 2. 질답 작성
 
-주제에 맞는 폴더 내부의 `README.md`에 질답을 작성합니다.
+주제에 맞는 폴더 내부의 `README.md`에 질답을 작성합니다. ex) `react/README.md`
 
 ### 3. commit & push
 
 작성한 질답을 `commit` 하고 개인의 원격 저장소(`origin`)에 `push` 합니다.
 
 ```shell
-git add 230823/README.md
+git add react/README.md
 git commit -m "doc: add chun-gu's qna on 230823"
 git push origin main
 ```

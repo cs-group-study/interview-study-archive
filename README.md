@@ -50,16 +50,16 @@ GitHub 페이지에서 직접 `conflict`를 해결한 뒤 `merge`합니다.
 
 ```shell
 git checkout main
-git branch -D react/chun-gu
+git branch -D 230823/chun-gu
 git pull upstream main
 ```
 
 ### 2. 새로운 브랜치 생성
 
-브랜치 이름은 `주제/이름`으로 합니다. ex) `react/chun-gu`
+브랜치 이름은 `일자/이름`으로 합니다. ex) `230823/chun-gu`
 
 ```shell
-git checkout -b react/chun-gu
+git checkout -b 230823/chun-gu
 ```
 
 ### 3. 질답 작성
@@ -71,11 +71,11 @@ git checkout -b react/chun-gu
 작성한 질답을 `commit` 하고 개인의 원격 저장소(`origin`)에 `push` 합니다.
 
 ```shell
-git add react/README.md
-git commit -m "doc: add chun-gu's qna for react"
-git push origin react/chun-gu
+git add 230823/README.md
+git commit -m "doc: add chun-gu's qna on 230823"
+git push origin 230823/chun-gu
 ```
 
 ### 5. PR 생성
 
-`GitHub` 페이지의 개인 저장소의 `react/chun-gu` 브랜치에서 organization 저장소의 `main` 브랜치로 PR을 보냅니다.
+`GitHub` 페이지의 개인 저장소의 `230823/chun-gu` 브랜치에서 organization 저장소의 `main` 브랜치로 PR을 보냅니다.

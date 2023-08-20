@@ -17,6 +17,7 @@ git clone https://github.com/cs-group-study/interview-study-archive.git
 - 당일 스터디를 진행하기 전, 이전 회차의 질답 `PR`을 `merge`합니다.
 - 동일한 파일에 각자의 질답을 추가하기 때문에 `conflict`가 발생합니다.
 - GitHub 페이지에서 직접 `conflict`를 해결한 뒤 `merge`합니다.
+- `merge` 완료된 브랜치는 바로 삭제합니다.
 
 ### 2. 면접 진행
 

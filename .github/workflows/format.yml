@@ -15,7 +15,19 @@ jobs:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
+      - name: Check Last Commit
+        id: check_commit
+        run: |
+          last_commit_message=$(git log -1 --pretty=format:%s)
+          if [[ $last_commit_message == *"style: formatted by github action"* ]]; then
+            echo "Commit message matches. Status check passes."
+          else
+            echo "Commit message doesn't match. Running Prettier."
+            echo "::set-output name=run_prettier::true"
+          fi
+
       - name: Prettify code
+        if: steps.check_commit.outputs.run_prettier == 'true'
         uses: creyD/prettier_action@v4.3
         with:
           prettier_options: --write **/*.md

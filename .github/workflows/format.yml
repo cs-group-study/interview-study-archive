@@ -3,6 +3,9 @@ name: Format
 on:
   pull_request:
     branches: [ "main" ]
+  push:
+    branches:
+      - main
 
 jobs:
   prettier:
@@ -11,25 +14,28 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          ref: ${{ github.head_ref }}
-          fetch-depth: 0
 
-      - name: Check Last Commit
-        id: check_commit
+      - name: Get Last Commit Message
+        id: get_commit_message
         run: |
           last_commit_message=$(git log -1 --pretty=format:%s)
-          if [[ $last_commit_message == *"style: formatted by github action"* ]]; then
-            echo "Commit message matches. Status check passes."
+          echo "::set-output name=commit_message::$last_commit_message"
+
+      - name: Check Commit Source
+        id: check_commit_source
+        run: |
+          if [[ "${{ steps.get_commit_message.outputs.commit_message }}" == "style: formatted by github action" ]]; then
+            echo "Commit message created by workflow. Running Prettier."
+            echo "::set-output name=run_prettier::true"
           else
-            echo "Commit message doesn't match. Running Prettier."
+            echo "Commit message created by user. Running Prettier."
             echo "::set-output name=run_prettier::true"
           fi
 
       - name: Prettify code
-        if: steps.check_commit.outputs.run_prettier == 'true'
+        if: steps.check_commit_source.outputs.run_prettier == 'true'
         uses: creyD/prettier_action@v4.3
         with:
           prettier_options: --write **/*.md
-          only_changed: True
+          only_changed: true
           commit_message: "style: formatted by github action"

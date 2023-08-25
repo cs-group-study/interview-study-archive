@@ -19,5 +19,5 @@ jobs:
         uses: creyD/prettier_action@v4.3
         with:
           prettier_options: --write **/*.md
-          only_changed: True
-          commit_message: "style: formatted by github action"
+          only_changed: true
+          same_commit: true

@@ -1,7 +1,7 @@
 name: Format
 
 on:
-  pull_request:
+  push:
     branches: [ "main" ]
 
 jobs:
@@ -19,5 +19,5 @@ jobs:
         uses: creyD/prettier_action@v4.3
         with:
           prettier_options: --write **/*.md
-          only_changed: True
+          only_changed: true
           commit_message: "style: formatted by github action"

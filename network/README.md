@@ -1,17 +1,29 @@
 # Network
+
 ## non-formatted change
+
 non-formatted change
+
 - a
 - b  
-c
+  c
+
 ## additional change
+
 additional change
+
 - will
 - force
-push
+  push
+
 ## more additional change
+
 more additional change
+
 ## more additional change2
+
 more additional change2
+
 ## more additional change3
+
 more additional change3

@@ -56,3 +56,28 @@ let과 const는 "블록 스코프(block-scope)"를 가지기 떄문에 호이스
 ## ❓환경 레코드란 무엇인가요?
 
 함수가 실행되면 실행 컨텍스트가 생성되는데, 실행 컨텍스트의 구성요소 중 식별자들을 기록해 놓는 곳이 환경 레코드입니다.
+
+## ❓실행 컨텍스트에 대해 설명해 주세요.
+
+## ❓전역 코드 평가 과정에 대해 설명해 주세요.
+
+## ❓variableEnvrionment와 lexicalEnvironment의 차이점에 대해 설명해 주세요.
+
+## ❓다음 코드에서 inner와 outer함수의 참조관계를 outerEnvironmentReference, LexicalEnvironment를 사용해 설명해 주세요.
+
+```js
+var a = 1;
+function outer() {
+  function inner() {
+    console.log(a);
+    var a = 3;
+    console.log(a);
+  }
+  inner();
+  console.log(a);
+}
+outer();
+console.log(a);
+```
+
+## ❓environmentRecord로 인해 발생할 수 있는 자바스크립트의 주요 현상은 무엇이 있나요?

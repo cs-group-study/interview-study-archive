@@ -61,3 +61,11 @@ useState에 직접적인 값 대신에 함수를 넘기는 것을 게으른(laz
 
 네, 맞습니다. 부모 컴포넌트가 리렌더링 되면 함수가 재생성되고 이전과 다른 참조값을 갖게 되는데, 자식 컴포넌트가 prop으로 받는 함수의 참조가 달라졌기 때문에 얕은 비교를 하는 `React.memo`는 자식 컴포넌트를 리렌더링 시킵니다.  
 [예시 코드](https://stackblitz.com/edit/stackblitz-starters-4dmbem?devToolsHeight=33&file=src%2FApp.tsx)
+
+## ❓virtual DOM에 대해 설명해 주세요.
+
+## ❓virtual DOM의 구조는 어떻게 이루어져 있나요?
+
+## ❓DOM과 virtual DOM의 차이점에 대해 설명해 주세요.
+
+## ❓virtual DOM의 사용으로 성능이 저하될 수 있는 경우엔 무엇이 있나요?

@@ -59,9 +59,45 @@ let과 const는 "블록 스코프(block-scope)"를 가지기 떄문에 호이스
 
 ## ❓실행 컨텍스트에 대해 설명해 주세요.
 
+실행 컨텍스트는 자바스크립트 코드를 실행하는 데 필요한 정보들을 모아놓은 객체입니다. 코드가 호출되면 평가 단계를 거치게 되는데 이때 생성되며 아래와 같은 구조를 가지고 있습니다. 
+
+```js
+executionContext = {
+  variableEnvironment: {
+    environmentRecord: {
+      // var로 선언된 식별자를 저장
+    }
+    outerEnvironmentReference: {
+      // 외부 lexicalEnvironment를 참조
+    }
+    thisBinding: // this 값을 저장
+  }
+  lexicalEnvironment: {
+    environmentRecord: {
+      // let, const로 선언된 식별자와 함수 선언문을 저장
+    }
+    outerEnvironmentReference: {
+    // 외부 lexicalEnvironment를 참조
+    }
+    thisBinding: // this 값을 저장
+  }
+}
+```
+
 ## ❓전역 코드 평가 과정에 대해 설명해 주세요.
 
-## ❓variableEnvrionment와 lexicalEnvironment의 차이점에 대해 설명해 주세요.
+1. 전역 실행 컨텍스트 생성
+2. 전역 렉시컬 환경 생성
+   1. 전역 환경 레코드 생성
+      1. 객체 환경 레코드 생성
+      2. 선언적 환경 레코드 생성
+   2. this 바인딩
+   3. 외부 렉시컬 환경에 대한 참조 결정
+
+## ❓variableEnvironment와 lexicalEnvironment의 차이점에 대해 설명해 주세요.
+
+- `variableEnvironment`: var로 선언된 식별자를 저장합니다.
+- `lexicalEnvironment`: let, const로 선언된 식별자와 함수 선언문을 저장하며, 다른 실행 컨텍스트의 `outerEnv`로 참조될 수 있습니다.
 
 ## ❓다음 코드에서 inner와 outer함수의 참조관계를 outerEnvironmentReference, LexicalEnvironment를 사용해 설명해 주세요.
 
@@ -80,4 +116,63 @@ outer();
 console.log(a);
 ```
 
+평가 시점에서의 각 함수 실행 컨텍스트는 다음과 같습니다.
+
+```js
+const globalExecutionContext = {
+  lexicalEnvironment: {
+    environmentRecord: {
+      outer: 'function object'
+    }
+    outerEnv: null
+    thisBinding: global
+  }
+  variableEnvironment: {
+    environmentRecord: {
+      a: undefined
+    }
+    outerEnv: null
+    thisBinding: global
+  }
+};
+
+const outerExecutionContext = {
+  lexicalEnvironment: {
+    environmentRecord: {
+      inner: 'function object'
+    }
+    outerEnv: globalExecutionContext.lexicalEnvironment
+    thisBinding: undefined
+  }
+  variableEnvironment: {
+    environmentRecord: {}
+    outerEnv: globalExecutionContext.lexicalEnvironment
+    thisBinding: undefined
+  }
+};
+
+const innerExecutionContext = {
+  lexicalEnvironment: {
+    environmentRecord: {}
+    outerEnv: outerExecutionContext.lexicalEnvironment
+    thisBinding: undefined
+    }
+  variableEnvironment: {
+    environmentRecord: {
+      a: undefined
+    }
+    outerEnv: outerExecutionContext.lexicalEnvironment
+    thisBinding: undefined
+    }
+};
+
+출력 결과
+undefined
+3
+1
+1
+```
+
 ## ❓environmentRecord로 인해 발생할 수 있는 자바스크립트의 주요 현상은 무엇이 있나요?
+
+실행 컨텍스트의 생성 과정에서 식별자들을 environmentRecord(환경 레코드)에 저장해놓기 때문에 [호이스팅](#호이스팅)이 발생할 수 있습니다.

@@ -61,3 +61,23 @@ useState에 직접적인 값 대신에 함수를 넘기는 것을 게으른(laz
 
 네, 맞습니다. 부모 컴포넌트가 리렌더링 되면 함수가 재생성되고 이전과 다른 참조값을 갖게 되는데, 자식 컴포넌트가 prop으로 받는 함수의 참조가 달라졌기 때문에 얕은 비교를 하는 `React.memo`는 자식 컴포넌트를 리렌더링 시킵니다.  
 [예시 코드](https://stackblitz.com/edit/stackblitz-starters-4dmbem?devToolsHeight=33&file=src%2FApp.tsx)
+
+## ❓virtual DOM에 대해 설명해 주세요.
+
+Virtual DOM은 메모리상에 존재하는 가상의 DOM입니다. 일반적으로 브라우저에서 DOM의 변경이 발생하면, 브라우저는 해당 변경을 적용하고, 리플로우와 리페인트 작업을 수행합니다. 이런 방식은 DOM의 변경이 많을 때 렌더링 성능에 부정적인 영향을 미치며, 대규모 또는 복잡한 애플리케이션에서는 성능 문제가 발생할 수 있습니다.
+
+React는 실제 DOM의 복사본인 virtual DOM 을 사용해서 상태가 변경될 때마다 Virtual DOM을 다시 생성하고 이전과 새로운 Virtual DOM을 비교하여 변경된 부분을 실제 DOM에 한번에 적용합니다. 이렇게 하면 리플로우 및 리페인트 작업의 횟수를 획기적으로 줄여서 성능을 크게 향상시킬 수 있습니다.
+
+## ❓virtual DOM의 구조는 어떻게 이루어져 있나요?
+
+current, workInProgress 두개의 트리가 존재합니다. current는 마운트가 끝난 트리이고, workInProgress는 업데이트가 적용 중인 트리입니다. 이러한 구조를 더블 버퍼링 이라고 하며, workInProgress 트리는 Commit Phase를 지나게 되면 Current 트리로 변경이되고, 새로운 workInProgress 트리가 생성되는 과정이 반복됩니다.
+
+## ❓DOM과 virtual DOM의 차이점에 대해 설명해 주세요.
+
+DOM은 현재 화면에 현재 렌더링 된 트리이며 DOM에 직접 접근할 수 있는 API를 제공합니다. 하지만 Virtual DOM은 DOM의 복사본이며 DOM에 접근할 수 없습니다. 또한 virtual DOM 자체를 직접 수정할 수도 없으며 state의 변경에 의해서만 가능합니다.
+
+## ❓virtual DOM의 사용으로 성능이 저하될 수 있는 경우엔 무엇이 있나요?
+
+SPA에 사용자의 인터랙션이 많고, 그에 따라 데이터가 자주 변경되는 웹페이지라면 Virtual DOM을 통해 업데이트 연산 횟수를 줄임으로써 성능을 향상시킬 수 있습니다.
+
+하지만 React는 실제 DOM 연산에 Virtual DOM 연산이 합쳐지는 것이기 때문에, 만약 사용자의 인터랙션이 발생하지 않는 정적인 웹페이지를 렌더링할 때 Virtual DOM을 사용하는 것은 성능이 좋지 않을 수 있습니다.

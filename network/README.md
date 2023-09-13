@@ -157,3 +157,9 @@ URL은 scheme, host, url-path, query로 나뉘어져 있는데, scheme는 사용
 ## ❓URI의 구성 요소 중 어떤 것들이 같아야 같은 출처(same origin)이라고 할 수 있을까요?
 
 scheme, host가 같아야 같은 출처라고 판단할 수 있습니다.
+
+## ❓HTTP 헤더의 종류에 대해 설명해 주세요.
+
+## ❓아래의 헤더를 통해 알 수 있는 정보는 무엇이 있을까요?
+
+<image src='../images/response-header.png'>

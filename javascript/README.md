@@ -215,14 +215,243 @@ undefined
 
 ## ❓this에 대해 설명해 주세요.
 
+this는 자신이 속한 객체 또는 자신이 생성할 인스턴스를 가리키는 자기 참조 변수입니다. this를 통해 자신이 속한 객체 또는 자신이 생성할 인스턴스의 프로퍼티나 메서드를 참조할 수 있습니다. this와 this가 가리키는 값을 연결하는 것을 this 바인딩이라고 하는데 함수 호출 방식에 의해 동적으로 결정됩니다.
+
 ## ❓함수 호출 방식에 따라 달라지는 this 바인딩에 대해 설명해 주세요.
 
-## ❓화살표 함수에서 this를 사용하는 경우엔 무엇이 있나요?
+### 일반 함수 호출
+
+일반 함수 내부에서 `this`는 전역 객체를 가리킵니다. (`strict mode`에서는 `undefined`)
+
+```js
+function func() {
+  console.log(this);
+}
+
+func(); // window
+
+(function func() {
+  "use strict";
+  console.log(this); // undefined
+})();
+```
+
+### 메서드 호출
+
+객체의 메소드로 호출될 때, `this`는 해당 객체를 가리킵니다.
+
+```js
+const obj = {
+  method: function () {
+    console.log(this);
+  },
+};
+
+obj.method(); // obj
+```
+
+### 생성자 함수 호출
+
+생성자 함수로 호출될 때, `this`는 새로 생성된 객체(인스턴스)를 가리킵니다.
+
+```js
+function Person(name) {
+  this.name = name;
+}
+
+const john = new Person("John");
+console.log(john.name); // "John"
+```
+
+### apply, call, bind에 의한 호출
+
+#### `apply`
+
+- 함수를 호출하는 함수.
+- `함수.apply(thisArg, [arg1, ..., argN])`
+- `this`에 바인딩 할 객체와 함수에 전달할 인자를 `배열(유사배열)`에 넣어서 실행한다.
+
+#### `call`
+
+- 함수를 호출하는 함수.
+- `함수.call(thisArg, arg1, ..., argN)`
+- `this`에 바인딩 할 객체와 함수에 전달할 인자를 넣어서 실행한다.
+
+#### `bind`
+
+- `apply`나 `call`과 다르게 함수를 실행시키지 않고 `this`가 바인딩 된 함수를 반환한다.
+- `함수.bind(thisArg, arg1, ..., argN)`
+- `this`에 바인딩 할 객체와 함수에 전달할 인자를 전달한다.
+- [`bind`는 함수처럼 호출 가능한 `특수 객체(exotic object)`를 반환한다.](https://ko.javascript.info/bind#ref-605)
+- 이 특수 객체를 호출하면 `this`가 `bind`에 넘겨준 객체로 고정된 함수가 호출된다.
+
+```js
+function countNumbers(a, b) {
+  console.log(`${this.name}: ${a}, ${b}`);
+}
+
+const person = { name: "John" };
+countNumbers.apply(person, [1, 2]); // "John: 1, 2"
+countNumbers.call(person, 1, 2); // "John: 1, 2"
+countNumbers.bind(person)(1, 2); // "John: 1, 2"
+
+const anotherPerson = { name: "Smith" };
+countNumbers.bind(person).call(anotherPerson, 1, 2); // "John: 1, 2" => bind로 인해 this가 person으로 고정됨
+```
+
+## ❓어떤 함수의 내부에서 호출된 함수의 this가 전역객체를 참조하는 것을 회피하려면 어떻게 해야 하나요?
+
+- `this`를 변수에 할당해두고 내부 함수에서 참조하는 방법
+
+```js
+const obj = {
+  method: function () {
+    const memoizedThis = this; // this를 변수에 할당
+    console.log(this); // obj
+
+    function innerFunc() {
+      console.log(this); // window
+      console.log(memoizedThis); // obj
+    }
+    innerFunc();
+  },
+};
+
+obj.method();
+```
+
+- 화살표 함수를 사용하는 방법
+
+```js
+const obj = {
+  method: function () {
+    console.log(this); // obj
+
+    const innerFunc = () => {
+      console.log(this); // obj
+    };
+    innerFunc();
+  },
+};
+
+obj.method();
+```
+
+- `apply`, `call`, `bind`를 사용해서 명시적으로 바인딩하는 방법
+
+```js
+const obj = {
+  method: function () {
+    console.log(this); // obj
+
+    function innerFunc(arg1, arg2) {
+      console.log(this); // obj
+    }
+    innerFunc.apply(obj, [1, 2]);
+    innerFunc.call(obj, 1, 2);
+    innerFunc.bind(obj)(1, 2);
+  },
+};
+
+obj.method();
+```
 
 ## ❓setTimeout, forEach, addEventListener에 넘겨준 콜백 함수에서 this는 어떻게 바인딩 될까요?
 
-## ❓함수와 메서드는 무엇이 다른가요?
+콜백 함수가 일반 함수인지 화살표 함수인지에 따라 다릅니다.
 
-## ❓어떤 함수의 내부에서 호출된 일반 함수의 this가 전역객체를 참조하는 것을 회피하려면 어떻게 해야 하나요?
+### setTimeout
+
+아래의 `normalTimer`와 `arrowTimer` 모두 객체 `obj`의 메서드로 호출되었으므로 `this`는 `obj`에 바인딩됩니다.  
+`setTimeout`의 콜백함수는 형태에 따라 다른데, `setTimeout`의 콜백함수는 콜스택이 전부 빈 뒤에야 이벤트 루프에 의해 콜스택에 진입합니다.  
+일반함수의 경우 호출될 때의 `this`는 `window`에 바인딩됩니다.  
+화살표함수의 경우 상위 스코프의 `this`에 바인딩되므로 `obj`에 바인딩됩니다.
+
+```js
+const obj = {
+  // 일반
+  normalTimer() {
+    console.log(this); // obj
+    setTimeout(function () {
+      console.log(this); // window
+    }, 0);
+  },
+  // 화살표
+  arrowTimer() {
+    console.log(this); // obj
+    setTimeout(() => {
+      console.log(this); // obj
+    }, 0);
+  },
+};
+
+obj.normalTimer();
+obj.arrowTimer();
+```
+
+### forEach
+
+아래의 `normalForEach`와 `arrowForEach` 모두 객체 `obj`의 메서드로 호출되었으므로 `this`는 `obj`에 바인딩됩니다.  
+`forEach`의 콜백함수는 형태에 따라 다른데,  
+일반함수의 경우 호출될 때의 `this`는 `window`에 바인딩됩니다.  
+화살표함수의 경우 상위 스코프의 `this`에 바인딩되므로 `obj`에 바인딩됩니다.
+
+```js
+const obj = {
+  arr: [0],
+  // 일반
+  normalForEach() {
+    console.log(this); // obj
+    this.arr.forEach(function () {
+      console.log(this); // window
+    });
+  },
+  // 화살표
+  arrowForEach() {
+    console.log(this); // obj
+    this.arr.forEach(() => {
+      console.log(this); // obj
+    });
+  },
+};
+
+obj.normalForEach();
+obj.arrowForEach();
+```
+
+### addEventListener
+
+`addEventListner`의 콜백함수가 일반함수일 경우 `this`는 이벤트가 발생한 요소에 바인딩됩니다. 하지만 화살표함수일 경우 상위 스코프인 `window`에 바인딩됩니다.
+
+```js
+// 일반
+target.addEventListener("click", function (e) {
+  console.log(this); // target === e.target
+});
+// 화살표
+target.addEventListener("click", (e) => {
+  console.log(this); // window
+});
+
+target.click();
+```
 
 ## ❓함수 선언식과 함수 표현식의 차이점이 무엇인가요?
+
+### 함수 선언식
+
+- `function` 키워드를 사용해서 함수를 만드는 방식
+- 일반적으로 기명함수(이름이 있는 함수)로 정의
+- 함수 호이스팅이 적용됨
+
+### 함수 표현식
+
+- 함수를 일급객체로 취급하는 자바스크립트의 특징을 활용해 변수에 함수를 할당하는 방식
+- 익명함수(이름이 없는 함수)로 정의될 수도 있음
+- 주로 한 번만 사용되거나 다른 함수 내에서 사용될 때 유용
+- 변수 호이스팅이 적용됨
+
+## ❓함수와 메서드는 무엇이 다른가요?
+
+- **함수**: 특정한 작업을 수행하는 기능 단위의 코드
+- **메서드**: 객체의 속성 또는 클래스의 멤버로 할당된 함수

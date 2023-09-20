@@ -236,3 +236,50 @@ scheme, host가 같아야 같은 출처라고 판단할 수 있습니다.
   - IE=Edge: 브라우저에 특정 버전의 Internet Explorer 렌더링 엔진을 사용하도록 지시합니다.
 - `X-Xss-Protection`
   - 1: 브라우저에 내장된 크로스 사이트 스크립팅(XSS) 보호 기능을 활성화합니다.
+
+## ❓REST API에 대해 설명해주세요.
+
+REST는 리소스를 표현하고 상태를 전달하는 방법을 기술한 웹 아키텍처 디자인 패턴입니다.
+RESTful API는 이러한 REST 원칙을 따르며, HTTP 프로토콜을 통해 데이터를 요청, 생성, 수정, 삭제하는 데 사용됩니다
+
+**HTTP 메서드 (HTTP Methods)**
+REST API에서는 HTTP 메서드를 사용하여 리소스를 다룹니다. 주요 HTTP 메서드는 다음과 같습니다.
+
+- **GET:** 리소스를 조회하기 위해 사용됩니다.
+- **POST:** 새로운 리소스를 생성하기 위해 사용됩니다.
+- **PATCH:** 기존 리소스의 일부를 업데이트하기 위해 사용됩니다.
+- **PUT:** 기존 리소스를 업데이트하기 위해 사용됩니다.
+- **DELETE:** 리소스를 삭제하기 위해 사용됩니다.
+
+### HTTP 주요 상태코드
+
+**200**
+
+GET: 리소스를 불러와서 메시지 바디에 전송되었습니다.
+HEAD: 개체 해더가 메시지 바디에 있습니다.
+PUT or POST: 수행 결과에 대한 리소스가 메시지 바디에 전송되었습니다.
+
+**201**
+
+created
+
+리소스 생성에 성공한 응답 코드
+일반적으로 Post, Put 요청 이후에 사용
+
+**401: unauthorized**
+
+- 인증되지 않은 사용자
+
+**403: forbidden**
+
+- 클라이언트가 접근할 권리 없음. 미승인
+
+(큰 그림)
+Informational responses (100 – 199)
+Successful responses (200 – 299)
+Redirection messages (300 – 399)
+Client error responses (400 – 499)
+Server error responses (500 – 599)
+
+[출처 MDN] https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+

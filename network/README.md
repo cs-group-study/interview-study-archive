@@ -282,4 +282,3 @@ Client error responses (400 – 499)
 Server error responses (500 – 599)
 
 [출처 MDN] https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
-

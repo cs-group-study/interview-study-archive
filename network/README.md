@@ -159,6 +159,7 @@ URL은 scheme, host, url-path, query로 나뉘어져 있는데, scheme는 사용
 scheme, host가 같아야 같은 출처라고 판단할 수 있습니다.
 
 ## ❓CORS가 무엇이고 겪어봤다면 어떻게 해결하셨는지 설명해 주세요.
+
 CORS는 Cross Origin Resource Sharing에 약자로, 서로 다른 Origin간의 리소스 교환을 뜻한다.
 
 CORS(Cross-Origin Resource Sharing) 란 웹 브라우저에서 보안 상의 이유로 SOP(Same-Origin Policy) 을 우회하는 방법 중 하나입니다.
@@ -176,8 +177,9 @@ CORS Error
 cors 에러는 브라우저에서 내뱉는 에러.
 
 **해결방법**
-1) Access-Control-Allow-Origin 전체 허용
-CORS 에러를 해결하는 방법으로 백엔드에서 모든 주소를 Access-Control-Allow-Origin 로 주면 간단히 해결한다.
+
+1. Access-Control-Allow-Origin 전체 허용
+   CORS 에러를 해결하는 방법으로 백엔드에서 모든 주소를 Access-Control-Allow-Origin 로 주면 간단히 해결한다.
 
 → 보안 문제 때문에 비추천
 
@@ -185,10 +187,11 @@ CORS 에러를 해결하는 방법으로 백엔드에서 모든 주소를 Access
 
 Access-Control-Allow-Origin:특정주소
 
-2) 프록시 서버 사용하기
-브라우저에서 보낸 요청을 프론트엔드에서 받아서 대신 보내는 방법이다.
+2. 프록시 서버 사용하기
+   브라우저에서 보낸 요청을 프론트엔드에서 받아서 대신 보내는 방법이다.
 
 nextjs의 경우에는 next.config.js 라는 파일을 이용해 상대 주소에 대해서는 미리 요청하는 주소를 바꿔줄 수 있다. 이외에도 nginx를 이용해서 프록시를 대신 구현할 수 있다. react에서도 proxy를 사용해서 해결 할 수 있다.
 
 ## ❓프리플라이트란?
+
 "preflighted" request는 "simple requests" 와는 달리, 먼저 OPTIONS 메서드를 통해 다른 도메인의 리소스로 HTTP 요청을 보내 실제 요청이 전송하기에 안전한지 확인합니다. cross-origin 요청은 유저 데이터에 영향을 줄 수 있기 때문에 이와같이 미리 전송(preflighted)합니다.

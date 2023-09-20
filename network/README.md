@@ -158,6 +158,85 @@ URL은 scheme, host, url-path, query로 나뉘어져 있는데, scheme는 사용
 
 scheme, host가 같아야 같은 출처라고 판단할 수 있습니다.
 
+## ❓HTTP 헤더의 종류에 대해 설명해 주세요.
+
+### General Header
+
+공통 헤더는 요청 및 응답의 메시지 모두에서 사용되지만 **컨텐츠에는 적용되지 않는 헤더**입니다.
+
+- Date: 요청 또는 응답이 만들어진 날짜와 시간
+- Connection :현재의 전송이 완료된 후 네트워크 접속의 유지 여부
+  - Keep-alive : 지속 연결
+  - close : 연결 종료
+- Cache-Control: 캐시 제어
+
+### Request Header
+
+요청 헤더는 HTTP 요청에서 사용되지만 메시지의 컨텐츠와 관련이 없는 HTTP 헤더입니다. 보통 Fetch될 리소스나 클라이언트 자체에 대한 정보를 포함하여 서버로 보내집니다.
+
+- Host: 서버의 도메인 네임과 서버가 현재 Listening 중인 TCP 포트를 알려줍니다.
+- User-Agent: 사용자가 어떤 클라이언트(운영체제와 브라우저를 포함한)를 이용해 요청을 보냈는지 알려줍니다.
+- Accept: 클라이언트가 받을 수 있는 응답의 타입을 서버에게 알려줍니다.
+- Authorization: 서버에 인가된 사용자임을 증명할 때 사용합니다. 보통 JWT나 Bearer 토큰을 서버로 보낼 때 사용합니다.
+- Origin: POST와 같은 요청을 보낼 때, 요청이 어느 주소에서 시작되었는지 알려줍니다.
+- Referer
+
+### Response Header
+
+위치 또는 서버 자체에 대한 정보(이름, 버전)과 같이 응답에 대한 부가적인 정보를 갖는 헤더입니다.
+
+- Access-Control-Allow-Origin: 요청이 허용된 origin을 명시, `*`는 아무한테나 받음
+- Allow
+- Content-Disposition
+- Location: 리다이렉트 헤더라고도 하며, 300번대 응답일 때 어느 페이지로 이동할지를 알려줍니다.
+- Content-Security-Policy
+
+### Entity Header
+
+컨텐츠 길이나 MIME 타입과 같이 Entity Body에 대한 자세한 정보를 포함하는 헤더입니다.
+
+- Content-Length: 바이트 단위를 가지는 Header + Body의 크기
+- Content-Type: 개체의 미디어 타입(MIME)과 문자열 인코딩(UTF-8)을 지정합니다.
+- Content-Language: 사용자들에게 언어를 설명하기 위해 사용됩니다. 사용자가 선호하는 언어에 따라 사용자를 구분할 수 있게 합니다.
+- Content-Encoding: 미디어 타입을 압축하기 위해서 사용됩니다. ex) gzip, deflate
+
+## ❓아래의 헤더를 통해 알 수 있는 정보는 무엇이 있을까요?
+
+<image src='../images/response-header.png'>
+
+- `Cache-Control`
+  - no-store: 응답의 일부라도 캐싱해서는 안 되며 다른 요청을 충족하기 위해 해당 응답을 사용해서는 안 된다는 것을 나타냅니다.
+  - no-cache: 유효성 검사를 통과하지 않았다면 다른 요청을 충족하는 데 해당 응답을 사용해서는 안 됨을 나타냅니다.
+  - must-revalidate: 응답이 stale해지면 오리진에서 성공적으로 유효성을 검사할 때까지 캐시가 다른 요청을 충족하기 위해 해당 응답을 재사용하지 않아야 함을 나타냅니다.
+  - post-check=0: 캐시된 복사본을 사용하고 0초 후 서버에서 유효성 검사를 다시 수행해야 합니다.
+  - pre-check=0: 캐시된 복사본을 사용하기 0초 전 서버에서 유효성 검사를 다시 수행해야 합니다.
+- `Content-Encoding`
+  - gzip: 콘텐트가 gzip으로 인코딩되었음을 나타냅니다.
+- `Content-Language`
+  - ko-KR: 콘텐트가 한국어 사용자를 대상으로 함을 나타냅니다.
+- `Content-Type`
+  - text/html;charset=UTF-8: 응답 내용의 미디어 유형을 정의합니다. 여기에서는 UTF-8 문자 인코딩을 사용한 HTML입니다.
+- `Date`
+  - Wed, 13 Sep 2023 05:31:46 GMT: 응답이 생성된 날짜와 시간을 나타냅니다.
+- `Expires`
+  - Thu, 19 Nov 1981 08:52:00 GMT: 응답이 stale로 취급받아 캐싱되지 않도록 하기 위해 만료일시를 과거의 날짜로 지정했습니다.
+- `Pragma`
+  - no-cache: HTTP/1.0 클라이언트에 대한 이전 버전과의 호환성을 제공하고 요청-응답 체인의 모든 캐싱 메커니즘이 준수해야 하는 지시문을 지정합니다.
+- `Server`
+  - hide: 요청을 처리하는 서버 소프트웨어에 대한 정보를 숨깁니다.
+- `Strict-Transport-Security`
+  - max-age=0: 중간자 공격으로부터 웹사이트를 보호하는 데 도움이 됩니다. 이 헤더는 브라우저에 항상 HTTPS를 통해 사이트에 연결하도록 지시합니다.
+- `Vary`
+  - Accept-Encoding: 동일한 리소스의 여러 representation 중에서 선택하는 데 사용된 요청 헤더가 `Accept-Encoding`임을 나타냅니다.
+- `X-Content-Type-Options`
+  - nosniff: MIME 유형 스니핑 취약성을 완화하는 데 도움이 됩니다. 브라우저에 응답에 지정된 Content-Type을 재정의하지 않도록 지시합니다.
+- `X-Frame-Options`
+  - "allow-from tistory.com": 클릭재킹 방지 기능을 제공합니다. 이 경우 "tistory.com" 도메인의 콘텐츠에 대해서만 프레이밍을 허용합니다.
+- `X-Ua-Compatible`
+  - IE=Edge: 브라우저에 특정 버전의 Internet Explorer 렌더링 엔진을 사용하도록 지시합니다.
+- `X-Xss-Protection`
+  - 1: 브라우저에 내장된 크로스 사이트 스크립팅(XSS) 보호 기능을 활성화합니다.
+
 ## ❓REST API에 대해 설명해주세요.
 
 REST는 리소스를 표현하고 상태를 전달하는 방법을 기술한 웹 아키텍처 디자인 패턴입니다.

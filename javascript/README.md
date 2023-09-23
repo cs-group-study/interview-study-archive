@@ -231,7 +231,7 @@ function func() {
 func(); // window
 
 (function func() {
-  'use strict';
+  "use strict";
   console.log(this); // undefined
 })();
 ```
@@ -259,7 +259,7 @@ function Person(name) {
   this.name = name;
 }
 
-const john = new Person('John');
+const john = new Person("John");
 console.log(john.name); // "John"
 ```
 
@@ -290,12 +290,12 @@ function countNumbers(a, b) {
   console.log(`${this.name}: ${a}, ${b}`);
 }
 
-const person = { name: 'John' };
+const person = { name: "John" };
 countNumbers.apply(person, [1, 2]); // "John: 1, 2"
 countNumbers.call(person, 1, 2); // "John: 1, 2"
 countNumbers.bind(person)(1, 2); // "John: 1, 2"
 
-const anotherPerson = { name: 'Smith' };
+const anotherPerson = { name: "Smith" };
 countNumbers.bind(person).call(anotherPerson, 1, 2); // "John: 1, 2" => bind로 인해 this가 person으로 고정됨
 ```
 
@@ -425,11 +425,11 @@ obj.arrowForEach();
 
 ```js
 // 일반
-target.addEventListener('click', function (e) {
+target.addEventListener("click", function (e) {
   console.log(this); // target === e.target
 });
 // 화살표
-target.addEventListener('click', (e) => {
+target.addEventListener("click", (e) => {
   console.log(this); // window
 });
 

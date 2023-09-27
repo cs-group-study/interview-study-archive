@@ -282,3 +282,21 @@ Client error responses (400 – 499)
 Server error responses (500 – 599)
 
 [출처 MDN] https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+
+## ❓DNS look-up 과정에 대해 설명해 주세요.
+
+DNS lookup이란 특정 도메인(www.google.com)의 IP 주소(58.230.87.22)를 알아내는 과정입니다. 브라우저의 주소창에 `www.goole.com`을 입력하고 엔터를 치면
+
+1. 브라우저는 브라우저의 캐시에 해당 도메인의 IP 주소가 있는지 확인하고 없다면 OS의 캐시를 확인합니다. 그래도 없다면 DNS Resolver에 물어보는데, 이때 DNS Resolver란 SKT, KT, LG와 같은 ISP(Internet Service Provider)나 Cloudflare(1.1.1.1), Amazon(8.8.8.8)과 같은 DNS Provider를 말합니다.
+2. DNS Resolver는 캐시에 해당 도메인의 IP 주소가 있는지 확인한 뒤, 있다면 응답합니다.
+3. 캐시에 없다면 DNS Resolver는 먼저 루트 네임서버에 물어보고
+4. 루트 네임 서버는 `.com` 네임서버의 IP 주소를 알려줍니다.
+5. `.com` 네임서버에 `www.google.com`의 IP주소를 물어보고
+6. `.com` 네임서버는 `google.com` 네임서버의 IP 주소를 알려줍니다.
+7. `google.com` 네임서버에 `www.google.com`의 IP 주소를 물어보고
+8. `google.com` 네임서버는 해당 IP 주소를 응답합니다.
+9. DNS Resolver는 이렇게 알아낸 IP 주소를 브라우저에게 알려줍니다.
+
+<image src='../images/dns-lookup.png' />
+
+위 과정에서 브라우저가 DNS Resolver에 물어보는 과정을 `recursive 쿼리`, DNS Resolver가 네임서버에 물어보는 과정을 `iterative 쿼리`라고 합니다.

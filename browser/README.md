@@ -63,7 +63,7 @@ CSS로 구현한 애니메이션이라면 `will-change` 속성을 사용해서 �
 HTML 파싱이 완료되기 전에 스크립트가 실행되므로 아직 생성되지 않은 DOM요소를 참조하는 코드가 스크립트에 있다면 오류가 발생할 수 있으며, 스크립트를 실행하는 동안 HTML 파싱을 중지하므로 사용자가 최소한의 콘텐츠를 보는 시점이 지연됩니다.
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>Document</title>
@@ -82,7 +82,7 @@ HTML 파싱이 완료되기 전에 스크립트가 실행되므로 아직 생성
 정의된 스크립트 태그의 순서에 상관없이 다운로드가 먼저 완료된 순서대로 실행됩니다. 각각의 스크립트 파일이 실행될 때마다 HTML은 중지와 재시작을 반복하게 되며, 스크립트 파일이 순서에 의존적이어서 `b.js`의 올바른 실행에 `a.js`가 필요한 상황이라면 문제가 생길 수 있습니다.
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>Document</title>
@@ -106,7 +106,7 @@ HTML 파싱이 완료되기 전에 스크립트가 실행되므로 아직 생성
 HTML 파싱을 중단시키지 않아 최소한의 콘텐츠를 빨리 보여줄 수 있지만 문서에 스크립트에 의존하는 콘텐츠가 많다면 완전한 콘텐츠를 보여주는 시점이 지연될 수 있다는 단점이 있습니다.
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>Document</title>
@@ -125,7 +125,7 @@ HTML 파싱을 중단시키지 않아 최소한의 콘텐츠를 빨리 보여줄
 HTML 파싱이 완료되는대로 스크립트가 정의된 순서에 따라 실행됩니다.
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>Document</title>
@@ -160,3 +160,36 @@ HTML 파싱이 완료되는대로 스크립트가 정의된 순서에 따라 실
 
 - `will-change: opacity`를 사용하면 `opacity`의 초깃값이 1이어도 리플로우나 리페인트가 발생하지 않고 compositor 스레드에서 작업을 처리합니다.
 - `animation`을 사용하면 리플로우나 리페인트 없이 GPU와 compositor 스레드에서 작업을 처리합니다.
+
+## ❓requestAnimationFrame이 무엇인가요?
+
+`requestAnimationFrame`은 Web API가 제공하는 함수로, 애니메이션과 같은 주기적인 렌더링을 최적화하는 데 유용하게 쓰입니다.
+
+## ❓requestAnimationFrame은 왜 사용하나요?
+
+`setInterval`과 같은 타이밍 함수는 모니터 주사율을 전혀 고려하지 않고 실행됩니다. 예를 들어 1초에 60프레임을 출력할 수 있는 모니터의 주사율에 맞추기 위해 `setInterval`의 주기를 `1000/60(16.66ms)`으로 설정해도 무거운 작업으로 인해 실행이 밀려서 프레임이 유실될 수 있습니다. 하지만 `requestAnimationFrame`은 브라우저가 프레임을 렌더하기 위한 페인트 단계에 들어서기 전에 항상 호출되어 모니터 주사율에 맞게 프레임을 출력하므로 부드러운 애니메이션을 구현할 수 있습니다.
+
+또한 브라우저의 탭이 비활성 상태일 경우 애니메이션이 일시 정지되어서 자원을 아낄 수 있고 모바일 기기의 경우 배터리 소모를 줄일 수 있습니다.
+
+## ❓requestAnimationFrame의 실행을 중단시키려면 어떻게 해야 하나요?
+
+`requestAnimationFrame`은 양의 정수인 `requestID`를 반환하는데 이를 `cancleAnimationFrame`에 넘겨서 실행하면 애니메이션을 중단할 수 있습니다.
+
+```js
+let rafId;
+let tick = 0;
+
+function animate() {
+  // tick이 5가 되면 중단
+  if (tick === 5) return cancelAnimationFrame(rafId);
+
+  tick += 1;
+  rafId = requestAnimationFrame(animate);
+}
+
+requestAnimationFrame(animate);
+```
+
+## ❓requestAnimationFrame과 setTimeout의 콜백은 각각 어느 큐에서 처리되나요?
+
+`setTimeout`은 태스크 큐, `requestAnimationFrame`은 애니메이션 프레임에서 처리됩니다. 우선순위는 마이크로 태스크 큐, 애니메이션 프레임, 태스크 큐입니다.

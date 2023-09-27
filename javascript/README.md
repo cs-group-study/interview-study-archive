@@ -455,3 +455,43 @@ target.click();
 
 - **함수**: 특정한 작업을 수행하는 기능 단위의 코드
 - **메서드**: 객체의 속성 또는 클래스의 멤버로 할당된 함수
+
+## ❓빌트인 객체가 무엇인가요? 또 종류는 어떤 것들이 있나요?
+
+빌트인 객체(Built-in Object)는 JavaScript 언어 자체에 내장된 객체로 기본적인 데이터 유형을 다루거나 특정 작업을 수행하기 위한 객체입니다.자바스크립트 엔진에 내장되어 사용자의 환경에 상관 없이 즉시 사용할 수 있는 코드를 의미합니다.
+
+### 기본 데이터 유형과 관련된 빌트인 객체
+
+`Object` 모든 객체의 기본이 되는 객체.
+`Array` 배열을 다루는 객체.
+`String` 문자열을 다루는 객체.
+`Number` 숫자를 다루는 객체.
+`Boolean` 불리언 값을 다루는 객체.
+`Symbol` 유일한 값을 나타내는 심볼 값을 다루는 객체.
+
+### 예외 처리와 관련된 빌트인 객체
+
+`Error`
+`AggregateError`
+`EvalError`
+`RangeError`
+`ReferenceError`
+`SyntaxError`
+`TypeError`
+`URIError`
+
+### 숫자와 날짜와 관련된 빌트인 객체
+
+`Number`
+`BigInt`
+`Math`
+`Date`
+
+### DOM(Document Object Model) 다루기와 관련된 빌트인 객체
+
+`document` 웹 페이지의 DOM을 조작하는 객체.
+`window` 브라우저 창을 나타내는 객체.
+
+### 전역 객체(Global Object)
+
+`global` 전역 범위에서(Node.js 환경) 사용할 수 있는 객체.

@@ -158,6 +158,44 @@ URL은 scheme, host, url-path, query로 나뉘어져 있는데, scheme는 사용
 
 scheme, host가 같아야 같은 출처라고 판단할 수 있습니다.
 
+## ❓CORS가 무엇이고 겪어봤다면 어떻게 해결하셨는지 설명해 주세요.
+
+CORS는 Cross Origin Resource Sharing에 약자로, 서로 다른 Origin간의 리소스 교환을 뜻한다.
+
+CORS(Cross-Origin Resource Sharing) 란 웹 브라우저에서 보안 상의 이유로 SOP(Same-Origin Policy) 을 우회하는 방법 중 하나입니다.
+
+여기서 SOP(Same-Origin Policy) 는 동일 출처(Same-Origin) 서버에 있는 리소스는 자유로이 가져올수 있지만, 다른 출처(Cross-Origin) 서버에 있는 이미지나 리소스는 상호작용이 불가능하다는 정책입니다. 따라서 다른 도메인에서 오는 리소스에 접근하기 위해서는 브라우저가 이를 허용해야 합니다.
+
+CORS는 이러한 Same-Origin Policy 를 우회하기 위한 방법으로, 서버에서 특정 HTTP 헤더를 설정하여 브라우저에게 다른 도메인에서의 리소스에 대한 접근을 허용하도록 알려줍니다. 이를 통해 클라이언트 측에서 다른 도메인의 리소스에 접근할 수 있습니다.
+
+CORS Error
+
+다른 Origin에서 오는 요청이라면 내가 요청으로 받아온 결과를 믿을만한지 그렇지 않은지 검증하는 과정이 필요하다
+
+브라우저에서는 localhost:8080 서버에서 전달 받은 응답중 헤더에 Access-Control-Allow-Origin 값을 확인하고 이 값에 현재 Origin이 포함되는지 확인한다. 포함되어 있다면 CORS를 수행하고 그렇지 않으면 에러를 낸다. 앞서 사진의 빨간 줄은 Origin에 포함되어 있지 않았기 때문에 브라우저에서 CORS 허용하지 않아 발생한 것이다. Origin이 포함되어 있다면 Method도 확인하고 Content Type도 본다.
+
+cors 에러는 브라우저에서 내뱉는 에러.
+
+**해결방법**
+
+1. Access-Control-Allow-Origin 전체 허용
+   CORS 에러를 해결하는 방법으로 백엔드에서 모든 주소를 Access-Control-Allow-Origin 로 주면 간단히 해결한다.
+
+→ 보안 문제 때문에 비추천
+
+특정 주소만 허용되도록 함
+
+Access-Control-Allow-Origin:특정주소
+
+2. 프록시 서버 사용하기
+   브라우저에서 보낸 요청을 프론트엔드에서 받아서 대신 보내는 방법이다.
+
+nextjs의 경우에는 next.config.js 라는 파일을 이용해 상대 주소에 대해서는 미리 요청하는 주소를 바꿔줄 수 있다. 이외에도 nginx를 이용해서 프록시를 대신 구현할 수 있다. react에서도 proxy를 사용해서 해결 할 수 있다.
+
+## ❓프리플라이트란?
+
+"preflighted" request는 "simple requests" 와는 달리, 먼저 OPTIONS 메서드를 통해 다른 도메인의 리소스로 HTTP 요청을 보내 실제 요청이 전송하기에 안전한지 확인합니다. cross-origin 요청은 유저 데이터에 영향을 줄 수 있기 때문에 이와같이 미리 전송(preflighted)합니다.
+=======
 ## ❓HTTP 헤더의 종류에 대해 설명해 주세요.
 
 ### General Header
@@ -300,3 +338,39 @@ DNS lookup이란 특정 도메인(www.google.com)의 IP 주소(58.230.87.22)를 
 <image src='../images/dns-lookup.png' />
 
 위 과정에서 브라우저가 DNS Resolver에 물어보는 과정을 `recursive 쿼리`, DNS Resolver가 네임서버에 물어보는 과정을 `iterative 쿼리`라고 합니다.
+
+## ❓프록시(Proxy)에 대해 설명해주세요.
+
+**개념**
+
+프록시란 인터넷과 관련되어 쓰이는경우 컴퓨터 네트워크에서 중간 매개 역할을 하는 시스템 또는 라우터입니다.
+클라이언트와 웹 서버 중간에 위치하여 통신을 중개하는 역할을 하며, 프록시 서버는 기본적으로 자체 IP 주소를 가지고 있는 인터넷 상의 컴퓨터입니다.
+
+### 프록시 서버의 용도
+
+1. 익명성 보호
+   프록시를 사용하여 Client의 실제 IP 주소를 숨기고 프록시 서버의 IP 주소를 사용하여 웹서버나 다른 리소스에 접근할 수 있습니다. 이를 통해 온라인 익명성을 유지하거나 지역 제한된 콘텐츠에 접근할 수 있습니다.
+2. 보안
+   클라이언트와 서버 사이의 트래픽을 중개하여, 악의적인 트래픽을 필터링하고 보안 검사를 수행할 수 있습니다. 이를 통해 웹 칠터링을 통해 특정 웹 사이트에 접근을 제한할 수 있습니다.
+3. 캐시
+   프록시는 이전에 요청한 데이터를 저장하여 동일한 요청이 다시 들어올 때 서버로부터 데이터를 다시 가져오지 않고 저장된 데이터를 반환하여 네트워크 대역폭을 절약하고 응답 시간을 개선할 수 있습니다.
+4. 접근 제어
+   네트워크 접근을 제어하여 특정 웹사이트나 서버에 대한 접근을 허용/차단 할 수 있습니다. 예로 기업 네트웨크에서 특정 웹사이트를 차단하거나, 부서별로 접근을 제한하는 데에 사용할 수 있습니다.
+5. 로깅과 모니터링
+   로깅과 모니터링: 프록시는 클라이언트와 서버 간의 모든 트래픽을 기록하고 모니터링할 수 있으므로 네트워크 활동을 추적하고 분석하는 데 도움을 줍니다.
+
+### Forward Proxy (정방향 프록시)와 Reverse Proxy (역방향 프록시)
+
+프록시의 종류는 Forward Proxy, Reverse Proxy, Transparent Proxy, Anonymous Proxy, High Anonymity Proxy 등 많은 종류가 있으며
+그 중에서 Forward Proxy와 Reverse Proxy에 대해 알아보겠습니다.
+
+- Forward Proxy (정방향 프록시)
+  정방향 프록시는 Client 앞에 위치하며, 내부 네트워크 내의 사용자 그룹에 데이터를 가져오는 데 사용됩니다. 요청이 전송되면 프록시 서버는 요청을 검사하여 연결을 계속 할 지 여부를 결정합니다.
+
+  <image style="max-width:500px;" src='../images/forward-proxy.png' />
+
+- Reverse Proxy (역방향 프록시)
+  포워드 프록스(정방향 프록시)와 달리 리버스 프록시는 웹 서버 앞에 위치라여 브라우저의 요청을 웹서버로 전달합니다.
+  이는 웹 서버의 네트워크 가장자리에서 사용자의 요청을 가로채는 방식으로 작동합니다. 그런 다음 원본 서버에 요청을 보내고 응답을 받습니다.
+
+  <image style="max-width:500px;" src='../images/reverse-proxy.png' />

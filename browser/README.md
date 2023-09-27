@@ -63,7 +63,7 @@ CSS로 구현한 애니메이션이라면 `will-change` 속성을 사용해서 �
 HTML 파싱이 완료되기 전에 스크립트가 실행되므로 아직 생성되지 않은 DOM요소를 참조하는 코드가 스크립트에 있다면 오류가 발생할 수 있으며, 스크립트를 실행하는 동안 HTML 파싱을 중지하므로 사용자가 최소한의 콘텐츠를 보는 시점이 지연됩니다.
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <title>Document</title>
@@ -82,7 +82,7 @@ HTML 파싱이 완료되기 전에 스크립트가 실행되므로 아직 생성
 정의된 스크립트 태그의 순서에 상관없이 다운로드가 먼저 완료된 순서대로 실행됩니다. 각각의 스크립트 파일이 실행될 때마다 HTML은 중지와 재시작을 반복하게 되며, 스크립트 파일이 순서에 의존적이어서 `b.js`의 올바른 실행에 `a.js`가 필요한 상황이라면 문제가 생길 수 있습니다.
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <title>Document</title>
@@ -106,7 +106,7 @@ HTML 파싱이 완료되기 전에 스크립트가 실행되므로 아직 생성
 HTML 파싱을 중단시키지 않아 최소한의 콘텐츠를 빨리 보여줄 수 있지만 문서에 스크립트에 의존하는 콘텐츠가 많다면 완전한 콘텐츠를 보여주는 시점이 지연될 수 있다는 단점이 있습니다.
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <title>Document</title>
@@ -125,7 +125,7 @@ HTML 파싱을 중단시키지 않아 최소한의 콘텐츠를 빨리 보여줄
 HTML 파싱이 완료되는대로 스크립트가 정의된 순서에 따라 실행됩니다.
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <title>Document</title>

@@ -161,6 +161,39 @@ HTML 파싱이 완료되는대로 스크립트가 정의된 순서에 따라 실
 - `will-change: opacity`를 사용하면 `opacity`의 초깃값이 1이어도 리플로우나 리페인트가 발생하지 않고 compositor 스레드에서 작업을 처리합니다.
 - `animation`을 사용하면 리플로우나 리페인트 없이 GPU와 compositor 스레드에서 작업을 처리합니다.
 
+## ❓requestAnimationFrame이 무엇인가요?
+
+`requestAnimationFrame`은 Web API가 제공하는 함수로, 애니메이션과 같은 주기적인 렌더링을 최적화하는 데 유용하게 쓰입니다.
+
+## ❓requestAnimationFrame은 왜 사용하나요?
+
+`setInterval`과 같은 타이밍 함수는 모니터 주사율을 전혀 고려하지 않고 실행됩니다. 예를 들어 1초에 60프레임을 출력할 수 있는 모니터의 주사율에 맞추기 위해 `setInterval`의 주기를 `1000/60(16.66ms)`으로 설정해도 무거운 작업으로 인해 실행이 밀려서 프레임이 유실될 수 있습니다. 하지만 `requestAnimationFrame`은 브라우저가 프레임을 렌더하기 위한 페인트 단계에 들어서기 전에 항상 호출되어 모니터 주사율에 맞게 프레임을 출력하므로 부드러운 애니메이션을 구현할 수 있습니다.
+
+또한 브라우저의 탭이 비활성 상태일 경우 애니메이션이 일시 정지되어서 자원을 아낄 수 있고 모바일 기기의 경우 배터리 소모를 줄일 수 있습니다.
+
+## ❓requestAnimationFrame의 실행을 중단시키려면 어떻게 해야 하나요?
+
+`requestAnimationFrame`은 양의 정수인 `requestID`를 반환하는데 이를 `cancleAnimationFrame`에 넘겨서 실행하면 애니메이션을 중단할 수 있습니다.
+
+```js
+let rafId;
+let tick = 0;
+
+function animate() {
+  // tick이 5가 되면 중단
+  if (tick === 5) return cancelAnimationFrame(rafId);
+
+  tick += 1;
+  rafId = requestAnimationFrame(animate);
+}
+
+requestAnimationFrame(animate);
+```
+
+## ❓requestAnimationFrame과 setTimeout의 콜백은 각각 어느 큐에서 처리되나요?
+
+`setTimeout`은 태스크 큐, `requestAnimationFrame`은 애니메이션 프레임에서 처리됩니다. 우선순위는 마이크로 태스크 큐, 애니메이션 프레임, 태스크 큐입니다.
+
 ## ❓웹사이트 성능 최적화에는 어떤 방법이 있나요?
 
 웹사이트의 성능 최적화 방법은 크게 `로딩 성능`을 개선하는 것과 `렌더링 성능`을 개선하는 방법이 있습니다.
@@ -228,3 +261,4 @@ FID에 영향을 미치는 것은 긴 태스크, JavaScript의 실행 시간, Ja
 
 CLS는 페이지 방문자의 시각적인 안정성을 측정합니다. 사용자에게 웹 페이지가 표시되고 최종적으로 변화되는 정도를 측정한 수치입니다.
 예를 들어 `갑자기 광고나 다른 요소가 나오며 원하지 않은 요소를 클릭하는 속임수를 방지`하기 위한 척도로 쓰입니다.
+

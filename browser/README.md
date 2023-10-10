@@ -63,7 +63,7 @@ CSS로 구현한 애니메이션이라면 `will-change` 속성을 사용해서 �
 HTML 파싱이 완료되기 전에 스크립트가 실행되므로 아직 생성되지 않은 DOM요소를 참조하는 코드가 스크립트에 있다면 오류가 발생할 수 있으며, 스크립트를 실행하는 동안 HTML 파싱을 중지하므로 사용자가 최소한의 콘텐츠를 보는 시점이 지연됩니다.
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>Document</title>
@@ -82,7 +82,7 @@ HTML 파싱이 완료되기 전에 스크립트가 실행되므로 아직 생성
 정의된 스크립트 태그의 순서에 상관없이 다운로드가 먼저 완료된 순서대로 실행됩니다. 각각의 스크립트 파일이 실행될 때마다 HTML은 중지와 재시작을 반복하게 되며, 스크립트 파일이 순서에 의존적이어서 `b.js`의 올바른 실행에 `a.js`가 필요한 상황이라면 문제가 생길 수 있습니다.
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>Document</title>
@@ -106,7 +106,7 @@ HTML 파싱이 완료되기 전에 스크립트가 실행되므로 아직 생성
 HTML 파싱을 중단시키지 않아 최소한의 콘텐츠를 빨리 보여줄 수 있지만 문서에 스크립트에 의존하는 콘텐츠가 많다면 완전한 콘텐츠를 보여주는 시점이 지연될 수 있다는 단점이 있습니다.
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>Document</title>
@@ -125,7 +125,7 @@ HTML 파싱을 중단시키지 않아 최소한의 콘텐츠를 빨리 보여줄
 HTML 파싱이 완료되는대로 스크립트가 정의된 순서에 따라 실행됩니다.
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>Document</title>
@@ -262,3 +262,14 @@ FID에 영향을 미치는 것은 긴 태스크, JavaScript의 실행 시간, Ja
 CLS는 페이지 방문자의 시각적인 안정성을 측정합니다. 사용자에게 웹 페이지가 표시되고 최종적으로 변화되는 정도를 측정한 수치입니다.
 예를 들어 `갑자기 광고나 다른 요소가 나오며 원하지 않은 요소를 클릭하는 속임수를 방지`하기 위한 척도로 쓰입니다.
 
+## ❓스켈레톤UI가 무엇인가요?
+
+스켈레톤UI란 실제 데이터가 엔더링 되기 전에 보이게 될 컨텐츠의 윤곽을 먼저 그려주는 **로딩 애니메이션**입니다. 스켈레톤UI로 사용자의 이탈을 막고, 어떤 컨텐츠들이 보여질지 미리 알려주는 효과가 있습니다.
+
+- ex) 스케레톤UI와 스피너
+  <image src="../images/skeleton-ui.png" style="max-width:500px;"/>
+
+스피너 또는 스켈레톤UI 사용 용도는 로딩 지속시간, 컴포넌트의 크기 등의 상황과 필요에 따라 사용됩니다.
+<image src="../images/loading-animation.png" style="max-width:500px;"/>
+
+[출처 블로그] https://bitly.ws/WUuD

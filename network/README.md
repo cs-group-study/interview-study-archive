@@ -194,7 +194,7 @@ nextjs의 경우에는 next.config.js 라는 파일을 이용해 상대 주소�
 
 ## ❓프리플라이트란?
 
-# "preflighted" request는 "simple requests" 와는 달리, 먼저 OPTIONS 메서드를 통해 다른 도메인의 리소스로 HTTP 요청을 보내 실제 요청이 전송하기에 안전한지 확인합니다. cross-origin 요청은 유저 데이터에 영향을 줄 수 있기 때문에 이와같이 미리 전송(preflighted)합니다.
+"preflighted" request는 "simple requests" 와는 달리, 먼저 OPTIONS 메서드를 통해 다른 도메인의 리소스로 HTTP 요청을 보내 실제 요청이 전송하기에 안전한지 확인합니다. cross-origin 요청은 유저 데이터에 영향을 줄 수 있기 때문에 이와같이 미리 전송(preflighted)합니다.
 
 ## ❓HTTP 헤더의 종류에 대해 설명해 주세요.
 
@@ -374,6 +374,39 @@ DNS lookup이란 특정 도메인(www.google.com)의 IP 주소(58.230.87.22)를 
   이는 웹 서버의 네트워크 가장자리에서 사용자의 요청을 가로채는 방식으로 작동합니다. 그런 다음 원본 서버에 요청을 보내고 응답을 받습니다.
 
   <image style="max-width:500px;" src='../images/reverse-proxy.png' />
+
+## ❓로드밸런싱에 대해 설명해주세요.
+
+로드 밸런싱이란 서버에 들어오는 네트워크 트래픽 부하(Load)를 백엔드 서버 그룹에 효율적으로 분산(Balancing)하는 것을 의미한다.
+<image src="../images/load-balancing.png" style="max-width:500px;"/>
+
+### 기능
+
+- 여러 서버에 걸쳐 클라이언트 요청이나 네트워크 로드를 효율적으로 분산
+- 온라인 상태인 서버에만 요청을 보내 고가용성과 안정성을 보장
+- 수요에 따라 서버를 추가하거나 빼는 유연성 제공
+- 보안 계층을 추가할 수 있는 기능 내장으로 어플리케이션 보안
+- 응답 시간을 늘리고 네트워크 지연 시간을 줄려 어플레케이션 성능 향상
+
+### 로드 밸런싱 알고리즘
+
+로드 밸런싱 알고리즘은 로드 밸런서가 서로 다른 클라이언트 요청 각각에 가장 적합한 서버를 결정하기 위해 따르는 규칙 세트입니다. 로드 밸런싱 알고리즘은 크게 2가지 범주로 나뉨니다.
+
+**정적 로드 밸런싱**: 정적 로드 밸런싱 알고리즘은 고정된 규칙을 따르며 현재 서버 상태와 무관합니다.
+
+- 라운드 로빈 방식
+- 가중 기반 라운드 로빈 방식
+- IP 해시 방식
+
+  **동적 로드 밸런식**: 동적 로드 밸런싱 알고리즘은 트래픽을 배포하기 전에 서버의 현재 상태를 검사합니다.
+
+- 최소 연결 방식
+- 가중치 기반 최소 연결 방식
+- 최소 응답 시간 방식
+- 리소스 기반 방식
+
+[출처 AWS] https://aws.amazon.com/ko/what-is/load-balancing/
+[출처 nginx] https://www.nginx.com/resources/glossary/load-balancing/
 
 # ❓NAT(Network Address Translation)에 대해 설명해주세요
 

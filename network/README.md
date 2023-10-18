@@ -194,7 +194,7 @@ nextjs의 경우에는 next.config.js 라는 파일을 이용해 상대 주소�
 
 ## ❓프리플라이트란?
 
-# "preflighted" request는 "simple requests" 와는 달리, 먼저 OPTIONS 메서드를 통해 다른 도메인의 리소스로 HTTP 요청을 보내 실제 요청이 전송하기에 안전한지 확인합니다. cross-origin 요청은 유저 데이터에 영향을 줄 수 있기 때문에 이와같이 미리 전송(preflighted)합니다.
+"preflighted" request는 "simple requests" 와는 달리, 먼저 OPTIONS 메서드를 통해 다른 도메인의 리소스로 HTTP 요청을 보내 실제 요청이 전송하기에 안전한지 확인합니다. cross-origin 요청은 유저 데이터에 영향을 줄 수 있기 때문에 이와같이 미리 전송(preflighted)합니다.
 
 ## ❓HTTP 헤더의 종류에 대해 설명해 주세요.
 
@@ -428,3 +428,79 @@ CDN의 주요 목적은 웹 페이지, 이미지, 동영상, 스크립트 및 �
 - Amazon CloudFront, Cloudflare, Akamai, Fastly
 
 [이미지 출처]https://www.cloudflare.com/ko-kr/learning/cdn/what-is-caching/
+
+## ❓로드밸런싱에 대해 설명해주세요.
+
+로드 밸런싱이란 서버에 들어오는 네트워크 트래픽 부하(Load)를 백엔드 서버 그룹에 효율적으로 분산(Balancing)하는 것을 의미한다.
+<image src="../images/load-balancing.png" style="max-width:500px;"/>
+
+### 기능
+
+- 여러 서버에 걸쳐 클라이언트 요청이나 네트워크 로드를 효율적으로 분산
+- 온라인 상태인 서버에만 요청을 보내 고가용성과 안정성을 보장
+- 수요에 따라 서버를 추가하거나 빼는 유연성 제공
+- 보안 계층을 추가할 수 있는 기능 내장으로 어플리케이션 보안
+- 응답 시간을 늘리고 네트워크 지연 시간을 줄려 어플레케이션 성능 향상
+
+### 로드 밸런싱 알고리즘
+
+로드 밸런싱 알고리즘은 로드 밸런서가 서로 다른 클라이언트 요청 각각에 가장 적합한 서버를 결정하기 위해 따르는 규칙 세트입니다. 로드 밸런싱 알고리즘은 크게 2가지 범주로 나뉨니다.
+
+**정적 로드 밸런싱**: 정적 로드 밸런싱 알고리즘은 고정된 규칙을 따르며 현재 서버 상태와 무관합니다.
+
+- 라운드 로빈 방식
+- 가중 기반 라운드 로빈 방식
+- IP 해시 방식
+
+  **동적 로드 밸런식**: 동적 로드 밸런싱 알고리즘은 트래픽을 배포하기 전에 서버의 현재 상태를 검사합니다.
+
+- 최소 연결 방식
+- 가중치 기반 최소 연결 방식
+- 최소 응답 시간 방식
+- 리소스 기반 방식
+
+[출처 AWS] https://aws.amazon.com/ko/what-is/load-balancing/
+[출처 nginx] https://www.nginx.com/resources/glossary/load-balancing/
+
+# ❓NAT(Network Address Translation)에 대해 설명해주세요
+
+- NAT(Network Address Translation)패킷이 라우팅 장치를 통해 전송되는 동안 패킷의 ip주소를 수정하여 ip주소를 다른주소로 매핑하는 방법.ipv4주소 체계만으로는 많은 주소들을 감당하지 못하는 단점이 있는데, 이를 해결하기위해 NAT로 공인ip 와 사설ip로 나눠서 많은 주소를 처리.
+
+- **공인 IP는 한정되어있기 때문에, 사설 IP의 개념이 필요하게 되었고, 공인IP를 가지고 있는 공유기 , 기계를 통해서 사설IP를 할당해준 다음 사설 IP를 가지고 외부의 네트워크와 통신할 때 필요한 기술**이다.
+
+ex) 공유기(공인IP) 와이파이(사설IP)에 접속해서 인터넷(공인IP)을 한다.
+요약하면 여러 대의 호스트가 하나의 공인 IP주소를 사용하여 인터넷에 접속하기 위한 경우이다.
+다만 단점은 사설IP의 개념 자체가 중복되는 IP가 엄청 많기 때문에, 외부에서 사설 IP로 접근할 수 없다.
+=> 이를 보안하기 위해서 나온 개념이 Port Forwarding이다
+
+## 포트 포워딩
+
+- Port Forwarding: NAT기술의 응용 으로서, 패킷이 라우터나 방화벽과 같은 네트워크 장비를 가로지르는 동안 특정 ip주소와 포트 번호의 통신 요청을 특정 다른 IP와 포트번호로 넘겨주는 이 기법은 게이트웨이의 반대쪽에 위치한 사설 네트워크에 상주하는 호스트에 대한 서비스를 생성하기 위해 흔히 사용된다.
+- 사설 IP의 단점은 IP를 알아볼 수 없기 때문에, 요청을 보내고 싶어도 보낼 수 없다는 단점이 있다. 따라서 클라이언트가 먼저 요청을 보내는데 이때 서버의 사설 IP로 직접 요청을 보내는 것이 아니라 공인 IP로 요청을 보낸다. 그리고 이 공유기의 포트 포워딩 설정을 하면 특정 포트로 들어온 요청을 다른 특정 사설 IP의 특정 포트로 전송한다.
+  이때 포트번호는 포트포워딩을 하는 사용자의 마음대로 설정할 수 있다.
+
+## NAT의 종류?
+
+### 1. Full Cone NAT
+
+가장 간단한 NAT 방식이다.
+private ip/port와 public ip/port가 매핑되면, 누구든 간에 그 public ip/port로 접근 시, host에게 통신을 시도할 수 있는 방식
+Host의 Private IP와 Port가 Router나 L3 Switch를 통해 Public IP와 Port로 매핑이 되면,
+매핑된 정보를 토대로 Host가 Service A로 통신을 시도했을때, Service A도 마찬가지로 매핑된 정보를 토대로 Host에게 패킷을 보낼 수 있고, 이는 Router 또는 L3 Switch를 통해 Host에게 전달이 가능
+
+### 2. Restricted Cone NAT
+
+Full Cone NAT에 비해 통신이 제한되는 부분이 있다
+기존에 통신하던 Service의 IP가 아니라면 Host에게로 패킷이 도달하지 않는다
+
+### 3. Port Restricted Cone NAT
+
+Port Restricted Cone은 여기에 host와 통신을 하던 Service의 Server IP, Port가 전부 동일하지 않다면, Host로의 패킷 전달을 차단한다
+즉, 기존에 통신하던 Service가 아니면 Host에게 패킷을 직접적으로 보낼 수 없는 환경.
+
+### 4. Symmetric NAT
+
+Symmetric 방식은 통신하는 Service의 IP/Port 를 기반으로, 매핑정보를 달리한다.
+Host가 통신하는 대상에 따라 각각 다른 매핑정보를 가져간다. 매핑정보가 계속해서 변하는 방식
+
+https://tomatohj.tistory.com/42

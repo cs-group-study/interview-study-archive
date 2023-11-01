@@ -32,6 +32,71 @@ React Hooks는 함수형 컴포넌트에서 상태와 생명주기 기능을 관
 
 커스텀 훅을 만들어 사용하는 주요 이점 중 하나는 **로직의 분리와 추상화**입니다. (\*추상화란 복잡한 시스템으로부터 핵심적인 개념또는 기능을 간추려내는 것을 의미) UI와 상태(state)를 분리하여 커스텀 훅으로 감싸면, 컴포넌트 코드는 더 간결해지고 가독성이 높아집니다. 또한 같은 로직을 여러 컴포넌트에서 사용할 때 중복을 피하고 일관성 있게 코드를 작성할 수 있습니다.
 
+## ❓useRef의 타입에 따라 달라지는 사용법에 대해 설명해 주세요.
+
+`useRef`의 타입에는 세가지가 있습니다.
+
+### 1. useRef<T>(initialValue: T): MutableRefObject<T>;
+
+```tsx
+function useRef<T>(initialValue: T): MutableRefObject<T>;
+```
+
+제네릭 타입과 `initialValue`의 타입이 `T`로 일치하는 경우, `MutableRefObject<T>` 타입의 객체를 반환하는데, 객체의 속성인 `current`의 값을 변경(mutate)할 수 있습니다.
+
+```ts
+예시)
+const value = useRef<number>(0);
+value.current = 1;
+```
+
+### 2. useRef<T>(initialValue: T | null): RefObject<T>;
+
+```ts
+function useRef<T>(initialValue: T | null): RefObject<T>;
+```
+
+`initialValue`의 타입이 `null`을 허용하는 경우, `RefObject<T>` 타입의 객체를 반환하는데, 객체의 속성인 `current`의 값을 변경(mutate)할 수 없습니다.
+
+```ts
+예시)
+const value = useRef<number>(null);
+value.current = 1; // Cannot assign to 'current' because it is a read-only property.
+```
+
+주로 DOM 객체에 접근할 때 사용합니다.
+
+```ts
+예시)
+const inputRef = useRef<HTMLInputElement>(null)
+inputRef.current.value = 'hi'
+```
+
+여기서 `current`의 `value`를 변경할 수 있는 이유는 `current`가 read-only인 것이지 `current`의 하위 속성들은 관계없기 때문입니다.
+
+`current`의 값을 변경 가능하게 만들고 싶다면 제네릭의 인자에 `| null` 을 포함시키면 됩니다. 이때 반환 객체의 타입은 `MutableRefObject<number | null>`로 변경됩니다.
+
+```ts
+예시)
+const value = useRef<number | null>(null);
+value.current = 1;
+```
+
+### 3. useRef<T = undefined>(): MutableRefObject<T | undefined>;
+
+```ts
+function useRef<T = undefined>(): MutableRefObject<T | undefined>;
+```
+
+`useRef`에 초깃값을 넣지 않은 경우, `MutableRefObject<T | undefined>` 타입의 객체를 반환합니다.
+
+```ts
+예시)
+const value = useRef<number>(); // MutableRefObject<number | undefined>
+value.current = 1;
+value.current = undefined;
+```
+
 ## ❓lazy initialization(게으른 초기화)에 대해 설명해 주세요.
 
 useState에 직접적인 값 대신에 함수를 넘기는 것을 게으른(lazy) 초기화라고 합니다. 게으른 초기화 함수는 state가 처음 만들어 질 때만 실행되고 나중에 다시 리렌더링이 된다면 이 함수의 실행은 무시됩니다. 상태의 초깃값을 localStorage에서 가져오거나 map, filter, find 등 복잡한 연산으로 구해야 하는 경우에 사용합니다.

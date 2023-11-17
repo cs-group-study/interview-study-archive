@@ -204,6 +204,19 @@ SPA에 사용자의 인터랙션이 많고, 그에 따라 데이터가 자주 �
 
 ## ❓Hydration이 무엇인가요?
 
+Hydration은 서버에서 렌더링 된 HTML에 이벤트 리스너 또는 상태를 부여해서 유저와 상호작용 할 수 있도록 만드는 과정입니다.
+
 ## ❓웹페이지의 성능 지표 중 Hydration과 연관될 수 있는 것은 무엇이 있을까요?
 
+Hydration을 한다는 것은 SSR을 한다는 뜻이므로 SSR과 연관된 성능 지표들을 꼽을 수 있습니다.
+
+- TTV(Time To View): 빠름
+- FCP(First Contentful Paint): 빠름
+- LCP(Largest Content Paint): 빠름
+- TTI(Time To Interact): 느림
+- FID(First Input Delay): 느림
+
 ## ❓Hydration을 최적화할 수 있는 방안은 무엇이 있을까요?
+
+- Progressive Hydration
+- Selective Hydration

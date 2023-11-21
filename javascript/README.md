@@ -67,7 +67,7 @@ let과 const는 "블록 스코프(block-scope)"를 가지기 떄문에 호이스
 
 ```js
 function outer() {
-  const value = "closure";
+  const value = 'closure';
 
   return function inner() {
     console.log(value);
@@ -253,7 +253,7 @@ function func() {
 func(); // window
 
 (function func() {
-  "use strict";
+  'use strict';
   console.log(this); // undefined
 })();
 ```
@@ -281,7 +281,7 @@ function Person(name) {
   this.name = name;
 }
 
-const john = new Person("John");
+const john = new Person('John');
 console.log(john.name); // "John"
 ```
 
@@ -312,12 +312,12 @@ function countNumbers(a, b) {
   console.log(`${this.name}: ${a}, ${b}`);
 }
 
-const person = { name: "John" };
+const person = { name: 'John' };
 countNumbers.apply(person, [1, 2]); // "John: 1, 2"
 countNumbers.call(person, 1, 2); // "John: 1, 2"
 countNumbers.bind(person)(1, 2); // "John: 1, 2"
 
-const anotherPerson = { name: "Smith" };
+const anotherPerson = { name: 'Smith' };
 countNumbers.bind(person).call(anotherPerson, 1, 2); // "John: 1, 2" => bind로 인해 this가 person으로 고정됨
 ```
 
@@ -447,11 +447,11 @@ obj.arrowForEach();
 
 ```js
 // 일반
-target.addEventListener("click", function (e) {
+target.addEventListener('click', function (e) {
   console.log(this); // target === e.target
 });
 // 화살표
-target.addEventListener("click", (e) => {
+target.addEventListener('click', (e) => {
   console.log(this); // window
 });
 
@@ -517,3 +517,19 @@ target.click();
 ### 전역 객체(Global Object)
 
 `global` 전역 범위에서(Node.js 환경) 사용할 수 있는 객체.
+
+## ❓이벤트 버블링에 대해 설명해 주세요.
+
+이벤트 버를링이란, 특정 화면 요소에서 이벤트가 발생했을 때 해당 이벤트가 더 상위의 요소들로 전달되는 특성을 의미합니다. 원치 않는 이벤트를 막기 위해서는 두 가지 함수가 있다.
+
+`event.stopPropagation()` : 현재 이벤트가 캡처링 / 버블링 단계에서 더 이상 전파되지 않도록 방지.
+
+`event.stopImmediatePropagation()` : stopPropagation과 마찬가지로 이벤트가 캡처링 / 버블링 단계에서 전파되지 않도록 방지하고 추가로, 동일한 요소에서 발생한 동일한 이벤트에 대한 또 다른 이벤트 핸들러의 실행도 막는다.
+
+### 이벤트 위임(Event Delegation)
+
+이벤트 위임은 캡처링과 버블링을 이용하여, 여러 element마다 각각 다른 이벤트 핸들러를 할당하지 않고, 공통되는 부모에 이벤트를 할당하여 이벤트를 관리하는 방식이다. 이를 통해 각각 이벤트 핸들러를 할당하지 않아도 된다. 버블링이 안되어야 하는 태그에는 전파되지 않도록 막아주어야 한다.
+
+이벤트 버블링이 되지 않는 이벤트도 있는데, `focus`, `blur`, `mouseenter`, `mouseleave` 등이 있다. 위 이벤트는 버블링이 일어나는 대체제는 각각 `focusin`, `focusout`, `mouseover`, `moustout`가 존재한다.
+
+[리액트 18버전에서는 이벤트가 어떻게 핸들링 되는가](https://medium.com/hcleedev/web-react%EC%9D%98-event-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EB%82%B4%EB%B6%80-%EA%B5%AC%ED%98%84-%EC%9E%90%EC%84%B8%ED%9E%88-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0-react-v18-2-0-39d59ab45bec)

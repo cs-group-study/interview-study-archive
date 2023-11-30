@@ -61,13 +61,13 @@ let과 const는 "블록 스코프(block-scope)"를 가지기 떄문에 호이스
 
 - 클로저는 자바스크립트 뿐만이 아니라 함수형 프로그래밍 언어에서 흔히 사용되는 개념으로, 함수와 해당 함수가 선언된 렉시컬 환경(Lexical Environment) 사이의 관계를 나타냅니다. 내부 함수가 유효한 상태에서 외부 함수가 종료되어 외부 함수의 실행 컨텍스트가 반환되어도, 외부 함수 실행 컨텍스트 내의 변수는 내부 함수에 의해 참조되는 한 유효하여, 내부 함수가 스코프 체인을 통해 참조할 수 있다는 것을 의미합니다.
 
-- 즉, 외부 함수가 이미 반환되었어도, 외부 함수 내의 변수는 이를 필요로 하는 내부 함수가 하나 이상 존재하는 경우 계속 유지되고, 실제 변수에 접근 할 수 있습니다.
+- 즉, 외부 함수가 이미 반환되었어도, 외부 함수 내의 변수는 이를 필요로 하는 내부 함수가 하나 이상 존재하는 경우 계속 유지되고, 실제 변수에 접근 할 수 있습니다. 이것은 Lexical Environment가 독립된 객체여서 내부 함수가 참조하고 있으면 가비지 컬렉팅 대상에 해당되지 않아서 실행 컨텍스트는 콜스택에서 반환되어도 스코프체인에 의해 참조가 가능하다.
 
 - 아래와 같은 코드가 있다고 가정할 때,
 
 ```js
 function outer() {
-  const value = "closure";
+  const value = 'closure';
 
   return function inner() {
     console.log(value);
@@ -253,7 +253,7 @@ function func() {
 func(); // window
 
 (function func() {
-  "use strict";
+  'use strict';
   console.log(this); // undefined
 })();
 ```
@@ -281,7 +281,7 @@ function Person(name) {
   this.name = name;
 }
 
-const john = new Person("John");
+const john = new Person('John');
 console.log(john.name); // "John"
 ```
 
@@ -312,12 +312,12 @@ function countNumbers(a, b) {
   console.log(`${this.name}: ${a}, ${b}`);
 }
 
-const person = { name: "John" };
+const person = { name: 'John' };
 countNumbers.apply(person, [1, 2]); // "John: 1, 2"
 countNumbers.call(person, 1, 2); // "John: 1, 2"
 countNumbers.bind(person)(1, 2); // "John: 1, 2"
 
-const anotherPerson = { name: "Smith" };
+const anotherPerson = { name: 'Smith' };
 countNumbers.bind(person).call(anotherPerson, 1, 2); // "John: 1, 2" => bind로 인해 this가 person으로 고정됨
 ```
 
@@ -447,11 +447,11 @@ obj.arrowForEach();
 
 ```js
 // 일반
-target.addEventListener("click", function (e) {
+target.addEventListener('click', function (e) {
   console.log(this); // target === e.target
 });
 // 화살표
-target.addEventListener("click", (e) => {
+target.addEventListener('click', (e) => {
   console.log(this); // window
 });
 

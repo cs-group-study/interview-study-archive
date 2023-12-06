@@ -27,3 +27,72 @@
 
 - never 타입은 불가능을 의미하는 타입입니다.
 - 불가능 한 값의 타입을 정의할 때 never 타입을 사용합니다. ex) 무한루프,의도적으로 오류를 발생시키는 함수
+
+## ❓덕 타이핑에 대해 설명해 주세요.
+
+- 타입을 미리 정하는 것이 아니라, 실행 되었을 때 확인하여 타입을 정하는 것을 말합니다.
+- 객체 자체가 어떤 타입인지는 중요하지 않고, 특정 메소드나 속성의 존재로 타입을 판단합니다. 
+
+### 장점
+
+- 타입에 대해 매우 자유롭고 빠르게 코드를 작성할 수 있습니다.
+
+### 단점
+
+- 런타임 과정에서 예상치 못한 타입으로 인해 오류가 발생할 수 있습니다.
+
+### 타입스크립트 사용 시 런타임 에러
+
+- 타입스크립트 코드에서 타입 에러는 컴파일 과정에서만 발생합니다.
+- 때문에 외부 API에 의존하는 코드일 경우, 이러한 데이터의 유효성을 검증하는 것이 중요합니다. 
+    ```ts
+    interface Account {
+    id: string;
+    email: string;
+    age: number;
+    level: "GOLD" | "SILVER" | "BRONZE";
+    active: boolean;
+    createdAt: Date;
+    image?: string | undefined;
+    ips?: string[] | undefined;
+    }
+
+    function updateAccount(account: Account) {
+    if (typeof account.id !== "string" || account.id.length < 36)
+        throw new Error("Invalid id");
+    if (typeof account.age !== "number" || account.age < 0)
+        throw new Error("Invalid age");
+    if (!["GOLD", "SILVER", "BRONZE"].includes(account.level))
+        throw new Error("Invalid level");
+    if (!(account.createdAt instanceof Date))
+        throw new Error("Invalid createdAt");
+    }
+    // 출처 : https://www.daleseo.com/zod-why-validation/
+    ```
+- 이를 구현할 수 있는 라이브러리는 `Joi`, `Yup`, `Zod` 등이 있습니다.
+    - 이 라이브러리들은 공통적으로 자바스크립트로 스키마를 정의하고, 이를 이용하여 유효성 검증을 가능하게 해줍니다.
+        ```js
+        // ✅ 스키마 정의
+        const Account = z.object({
+        id: z.string().uuid(),
+        email: z.string().email(),
+        age: z.number().int().min(18).max(80),
+        level: z.enum(["GOLD", "SILVER", "BRONZE"]),
+        image: z.string().url().max(200).optional(),
+        ips: z.string().ip().array().optional(),
+        active: z.boolean().default(false),
+        createdAt: z.date().default(new Date()),
+        });
+        // ✅ 스키마로 부터 타입 추론
+        type Account = z.infer<typeof Account>;
+        function updateAccount(account: Account) {
+        // ✅ 스키마로 유효성 검증
+        Account.parse(account);
+        }
+        ```
+        
+### 구조적 타이핑
+
+- 실제 구조와 정의에 의해 타입을 결정합니다.
+- 타입스크립트는 구조적 타이핑 시스템을 가지고 있습니다.
+- 때문에 다른 타입이더라도 같은 속성을 가지고 있다면 재사용할 수 있습니다.

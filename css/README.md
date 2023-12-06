@@ -25,3 +25,81 @@ box-sizing 속성의 기본 값은 `content-box`입니다. 이는 width와 heigh
 **content-box** : 기본값, width, height 프로퍼티 값은 content 영역을 의미한다.
 
 **border-box** : width, height 프로퍼티 값은 content 영역, padding, border가 포함된 값을 의미한다.
+
+## ❓selector에 대해 설명해 주세요.
+
+- CSS에서 선택자를 통해 특정 요소들을 선택하여 스타일 적용할 수 있는데, 이를 가능하게 하는 것을 `selector` 라고 합니다.
+
+### 종류
+
+#### Universal Selector
+
+```css
+* {
+  margin: 0;
+  text-decoration: none;
+}
+```
+
+- HTML 페이지 내부의 모든 요소에 같은 CSS 속성을 적용합니다.
+- 보통 예제 처럼 margin, padding 초기화 등 기본 값을 정해둘 때 사용합니다.
+
+#### Type Selector
+
+```css
+p { background: yellowgreen; color: darkgreen; }
+
+<!-- HTML -->
+<p>태그 선택자(Type Selector)</p>
+<div>태그 선택자(Type Selector)</div>
+```
+
+- HTML 요소를 직접 지칭합니다.
+
+#### Class Selector
+
+```css
+.class1 { background: yellowgreen; color: darkgreen; }
+div.class2 { background: darkgreen; color: yellowgreen; }
+
+<!-- HTML -->
+<p class="class1">클래스 선택자(Class Selector)</p>
+<p class="class2">클래스 선택자(Class Selector)</p>
+<div class="class2">클래스 선택자(Class Selector)</div>
+```
+
+- 주어진 값을 class 속성 값으로 가진 HTML 요소를 찾아 선택합니다.
+
+#### ID Selector
+
+```css
+#id1 { background: yellowgreen; color: darkgreen; }
+div#id2 { background: darkgreen; color: yellowgreen; }
+
+<!-- HTML -->
+<p id="id1">ID 선택자(ID Selector)</p>
+<p id="id2">ID 선택자(ID Selector)</p>
+<div id="id2">ID 선택자(ID Selector)</div>
+```
+
+- 마침표 대신 `#` 를 사용하고 id 속성을 사용합니다.
+
+### 우선순위
+
+- 스타일 우선순위는 아래와 같습니다.
+  1. !important 선언을 한 사용자 스타일
+  2. !important 선언을 한 제작자 스타일
+  3. 제작자 스타일
+  4. 사용자 스타일
+  5. 사용자 도구 선언
+
+#### 우선 순위 계산법
+
+```css
+!important > id [ 100 ] > class [ 10 ] > tag [ 1 ] > * [ 0 ]
+```
+
+- !important는 무조건 우선순위가 가장 높습니다.
+- 나머지 선택자는 위의 숫자를 각각 점수로 부여하여 계산되고, 높은 순서대로 높은 우선순위를 가지게 됩니다.
+- 예를 들자면 `li#selector1 {}` 는 101이라는 값을 가집니다.
+- 만약 우선순위가 같다면, 마지막에 지정된 스타일이 우선으로 적용됩니다.

@@ -35,8 +35,12 @@ box-sizing 속성의 기본 값은 `content-box`입니다. 이는 width와 heigh
 #### Universal Selector
 
 ```css
-* { margin: 0; text-decoration: none; }
+* {
+  margin: 0;
+  text-decoration: none;
+}
 ```
+
 - HTML 페이지 내부의 모든 요소에 같은 CSS 속성을 적용합니다.
 - 보통 예제 처럼 margin, padding 초기화 등 기본 값을 정해둘 때 사용합니다.
 
@@ -49,6 +53,7 @@ p { background: yellowgreen; color: darkgreen; }
 <p>태그 선택자(Type Selector)</p>
 <div>태그 선택자(Type Selector)</div>
 ```
+
 - HTML 요소를 직접 지칭합니다.
 
 #### Class Selector
@@ -62,6 +67,7 @@ div.class2 { background: darkgreen; color: yellowgreen; }
 <p class="class2">클래스 선택자(Class Selector)</p>
 <div class="class2">클래스 선택자(Class Selector)</div>
 ```
+
 - 주어진 값을 class 속성 값으로 가진 HTML 요소를 찾아 선택합니다.
 
 #### ID Selector
@@ -75,22 +81,24 @@ div#id2 { background: darkgreen; color: yellowgreen; }
 <p id="id2">ID 선택자(ID Selector)</p>
 <div id="id2">ID 선택자(ID Selector)</div>
 ```
+
 - 마침표 대신 `#` 를 사용하고 id 속성을 사용합니다.
 
 ### 우선순위
 
 - 스타일 우선순위는 아래와 같습니다.
-    1. !important 선언을 한 사용자 스타일
-    2. !important 선언을 한 제작자 스타일
-    3. 제작자 스타일
-    4. 사용자 스타일
-    5. 사용자 도구 선언
+  1. !important 선언을 한 사용자 스타일
+  2. !important 선언을 한 제작자 스타일
+  3. 제작자 스타일
+  4. 사용자 스타일
+  5. 사용자 도구 선언
 
 #### 우선 순위 계산법
 
 ```css
 !important > id [ 100 ] > class [ 10 ] > tag [ 1 ] > * [ 0 ]
 ```
+
 - !important는 무조건 우선순위가 가장 높습니다.
 - 나머지 선택자는 위의 숫자를 각각 점수로 부여하여 계산되고, 높은 순서대로 높은 우선순위를 가지게 됩니다.
 - 예를 들자면 `li#selector1 {}` 는 101이라는 값을 가집니다.

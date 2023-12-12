@@ -51,7 +51,7 @@
     id: string;
     email: string;
     age: number;
-    level: "GOLD" | "SILVER" | "BRONZE";
+    level: 'GOLD' | 'SILVER' | 'BRONZE';
     active: boolean;
     createdAt: Date;
     image?: string | undefined;
@@ -59,14 +59,14 @@
   }
 
   function updateAccount(account: Account) {
-    if (typeof account.id !== "string" || account.id.length < 36)
-      throw new Error("Invalid id");
-    if (typeof account.age !== "number" || account.age < 0)
-      throw new Error("Invalid age");
-    if (!["GOLD", "SILVER", "BRONZE"].includes(account.level))
-      throw new Error("Invalid level");
+    if (typeof account.id !== 'string' || account.id.length < 36)
+      throw new Error('Invalid id');
+    if (typeof account.age !== 'number' || account.age < 0)
+      throw new Error('Invalid age');
+    if (!['GOLD', 'SILVER', 'BRONZE'].includes(account.level))
+      throw new Error('Invalid level');
     if (!(account.createdAt instanceof Date))
-      throw new Error("Invalid createdAt");
+      throw new Error('Invalid createdAt');
   }
   // 출처 : https://www.daleseo.com/zod-why-validation/
   ```
@@ -76,20 +76,20 @@
     ```js
     // ✅ 스키마 정의
     const Account = z.object({
-    id: z.string().uuid(),
-    email: z.string().email(),
-    age: z.number().int().min(18).max(80),
-    level: z.enum(["GOLD", "SILVER", "BRONZE"]),
-    image: z.string().url().max(200).optional(),
-    ips: z.string().ip().array().optional(),
-    active: z.boolean().default(false),
-    createdAt: z.date().default(new Date()),
+      id: z.string().uuid(),
+      email: z.string().email(),
+      age: z.number().int().min(18).max(80),
+      level: z.enum(['GOLD', 'SILVER', 'BRONZE']),
+      image: z.string().url().max(200).optional(),
+      ips: z.string().ip().array().optional(),
+      active: z.boolean().default(false),
+      createdAt: z.date().default(new Date()),
     });
     // ✅ 스키마로 부터 타입 추론
     type Account = z.infer<typeof Account>;
     function updateAccount(account: Account) {
-    // ✅ 스키마로 유효성 검증
-    Account.parse(account);
+      // ✅ 스키마로 유효성 검증
+      Account.parse(account);
     }
     ```
 
@@ -98,3 +98,43 @@
 - 실제 구조와 정의에 의해 타입을 결정합니다.
 - 타입스크립트는 구조적 타이핑 시스템을 가지고 있습니다.
 - 때문에 다른 타입이더라도 같은 속성을 가지고 있다면 재사용할 수 있습니다.
+
+## ❓Type과 Interface의 차이에 대해 설명해주세요.
+
+일단 type과 interface는 타입스크립트에서 타입을 정의하는 키워드입니다. 둘 다 컴파일 타임에 타입 체크를 수행하고, 런타임에서는 타입 정보를 제거합니다.
+interface는 객체의 구조를 정의하는데 사용되며, 이를 통해 클래스나 함수의 파라미터 타입, 반환 타입, 변수 등을 정의할 수 있습니다. interface는 extends 키워드를 통해 타입 확장이 가능하고 다른 interface에서 상속하여 새로운 interface를 만들 수 있습니다.
+type은 객체 뿐만 아니라 문자열, 숫자 등의 다른 타입도 정의할 수 있습니다. type을 사용하여 새로운 타입을 만들 때 더 많은 유연서을 제공합니다. type은 union type, intersection type, tuple 등 다양한 타입을 정의할 수 있으며, interface와 달리 타입 별칭(type alias)를 사용할 수 있습니다.
+
+### type과 비교하여 interface의 성능상 이점
+
+type은 중복된 이름의 속성을 정의하면 에러가 발생하지만, interface의 경우 동일한 이름의 interface를 여러 개 선언해도 속성이 자동으로 머지된다.
+
+```ts
+interface User {
+  name: string;
+}
+
+interface User {
+  age: number;
+}
+
+const user: User = { name: 'John', age: 25 }; // 자동으로 머지됨
+```
+
+### 문제
+
+아래 코드에서 interface A의 타입은 어떻게 되나요?
+
+```ts
+interface A {
+  name: string;
+}
+interface A {
+  name: number;
+}
+```
+
+interface의 중요한 특징 중 하나는 서로 병합한다는 특징이 있다. 두 개의 interface가 A로 정의되었고 동일한 스코프에 선언된 경우, 선언된 모든 필드를 포함하는 더 큰 interface가 코드에 추가(머지) 된다.
+그러나 현재 위 코드는 interface A의 name 속성이 서로 다른 타입으로 선언되어 충돌이 발생했기 때문에 발생합니다. TypeScript는 타입의 일관성을 유지하기 위해 이러한 충돌을 허용하지 않는다.
+
+타입스크립트에서 interface 병합은 외부 패키지 또는 Window 같은 내장된 전역 interface를 보강하는데 유용하다. 그러나 일반적으로 타입스크립트 개발 시 interface의 병합은 자주 사용되지 않는다. interface가 여러 곳에 선언되면 코드를 이해하기 어렵고 가독성이 좋지 않기 때문에 가능하면 사용하지 않는 것이 좋다.

@@ -67,7 +67,7 @@ let과 const는 "블록 스코프(block-scope)"를 가지기 떄문에 호이스
 
 ```js
 function outer() {
-  const value = "closure";
+  const value = 'closure';
 
   return function inner() {
     console.log(value);
@@ -253,7 +253,7 @@ function func() {
 func(); // window
 
 (function func() {
-  "use strict";
+  'use strict';
   console.log(this); // undefined
 })();
 ```
@@ -281,7 +281,7 @@ function Person(name) {
   this.name = name;
 }
 
-const john = new Person("John");
+const john = new Person('John');
 console.log(john.name); // "John"
 ```
 
@@ -312,12 +312,12 @@ function countNumbers(a, b) {
   console.log(`${this.name}: ${a}, ${b}`);
 }
 
-const person = { name: "John" };
+const person = { name: 'John' };
 countNumbers.apply(person, [1, 2]); // "John: 1, 2"
 countNumbers.call(person, 1, 2); // "John: 1, 2"
 countNumbers.bind(person)(1, 2); // "John: 1, 2"
 
-const anotherPerson = { name: "Smith" };
+const anotherPerson = { name: 'Smith' };
 countNumbers.bind(person).call(anotherPerson, 1, 2); // "John: 1, 2" => bind로 인해 this가 person으로 고정됨
 ```
 
@@ -447,11 +447,11 @@ obj.arrowForEach();
 
 ```js
 // 일반
-target.addEventListener("click", function (e) {
+target.addEventListener('click', function (e) {
   console.log(this); // target === e.target
 });
 // 화살표
-target.addEventListener("click", (e) => {
+target.addEventListener('click', (e) => {
   console.log(this); // window
 });
 
@@ -621,3 +621,22 @@ target.click();
 그 이유는 값이 커지거나 길어지게 된다고 했을때를 생각하면 이해하기 쉬울 것이다.
 
 값을 직접 저장하면 데이터 할당시에는 빠르지만 값이 커지게 되면 비교에 비용이 많이 들고 저장될 때 메모리 낭비가 심하다. 그러나 값의 주소를 저장하면 데이터 할당시에는 값을 직접 저장하는 것에 비해 느리지만 값 비교시 주소만 비교하면 되니 비용이 거의 들지 않고 저장시에도 메모리 낭비를 최소화할 수 있다.
+
+## ❓구조 분해 할당이 뭔가요?
+
+구조 분해 할당은 배열이나, 객체, 함수, 매개변수를 해체하여 개별 변수에 할당하는 자바스크립트 표현식이다. 이를 통해 보다 코드를 간결하고 복잡한 데이터를 간편하게 다룰 수 있다.
+좌변에는 변수를 두고 우변에는 할당문을 두어 어떤 값을 분해해서 할당할지를 결정한다.
+
+### 구조 분해 할당이 가능하기 위한 조건
+
+좌변과 우변의 데이터 구조가 일치해야 하고, 또한 우변(할당될 값)이 이터러블(iterable)해야 한다.
+
+### 문제
+
+```js
+const [x, ...y] = [1, 2, 3];
+consoel.log(x, y);
+```
+
+x는 1 y는 [2,3]이 할당된다. spread 문법을 통해 나머지 요소를 배열로 할당된다.
+spread 연산자 사용시 마지막 요소에서 사용해야 한다.

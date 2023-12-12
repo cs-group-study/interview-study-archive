@@ -51,7 +51,7 @@
     id: string;
     email: string;
     age: number;
-    level: 'GOLD' | 'SILVER' | 'BRONZE';
+    level: "GOLD" | "SILVER" | "BRONZE";
     active: boolean;
     createdAt: Date;
     image?: string | undefined;
@@ -59,14 +59,14 @@
   }
 
   function updateAccount(account: Account) {
-    if (typeof account.id !== 'string' || account.id.length < 36)
-      throw new Error('Invalid id');
-    if (typeof account.age !== 'number' || account.age < 0)
-      throw new Error('Invalid age');
-    if (!['GOLD', 'SILVER', 'BRONZE'].includes(account.level))
-      throw new Error('Invalid level');
+    if (typeof account.id !== "string" || account.id.length < 36)
+      throw new Error("Invalid id");
+    if (typeof account.age !== "number" || account.age < 0)
+      throw new Error("Invalid age");
+    if (!["GOLD", "SILVER", "BRONZE"].includes(account.level))
+      throw new Error("Invalid level");
     if (!(account.createdAt instanceof Date))
-      throw new Error('Invalid createdAt');
+      throw new Error("Invalid createdAt");
   }
   // 출처 : https://www.daleseo.com/zod-why-validation/
   ```
@@ -118,7 +118,7 @@ interface User {
   age: number;
 }
 
-const user: User = { name: 'John', age: 25 }; // 자동으로 머지됨
+const user: User = { name: "John", age: 25 }; // 자동으로 머지됨
 ```
 
 ### 문제

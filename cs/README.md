@@ -151,7 +151,7 @@ https://velog.io/@st_hwang/babwm67z#mvc-%ED%8C%A8%ED%84%B4
 
 라이브러리를 예로 들면 React Query가 MVC, React가 MVVM을 사용한다고 할 수 있습니다.
 
-## ❓MPA, SPA, SSR, CSR에 대해 설명해 주세요.
+## ❓MPA와 SPA에 대해 설명해 주세요.
 
 ### MPA - Multi Page Application
 
@@ -166,7 +166,9 @@ https://velog.io/@st_hwang/babwm67z#mvc-%ED%8C%A8%ED%84%B4
 - 일반적으로 프론트엔드에서 라우팅을 처리하고, 서버는 API 엔드포인트만 제공하는 형태입니다.
 - 브라우저에서 페이지 전환이 일어나더라도 페이지 전체를 새로 불러오는 것이 아니라, 필요한 부분만 갱신하여 더 빠르게 동작할 수 있습니다.
 
-### CSR - Client-Side Rendering
+## ❓렌더링 전략에 대해 설명해 주세요.
+
+### CSR (Client-side Rendering)
 
 - 클라이언트 측에서 페이지 렌더링을 담당하는 방식입니다.
 - 초기 로딩 시에 기본적인 HTML, CSS, 자바스크립트를 받아오고, 이후에 클라이언트 측에서 필요한 데이터를 요청하고 렌더링합니다.
@@ -175,10 +177,14 @@ https://velog.io/@st_hwang/babwm67z#mvc-%ED%8C%A8%ED%84%B4
 - 초기에 빈 HTML을 받아오므로 SEO 측면에서 불리합니다.
 - 백오피스, 어드민 등 SEO의 중요성이 떨어지는 서비스라면 CSR이 좋은 선택지가 될 수 있습니다.
 
-### SSR - Server-Side Rendering
+### SSR (Server-side Rendering)
 
 - 서버에서 페이지를 렌더링하여 클라이언트에 보내주는 방식입니다.
 - 사용자의 요청에 따라 서버에서 필요한 데이터를 가져와 HTML을 완전한 상태로 만들어 보내주므로, 초기 로딩 속도가 빠릅니다.
 - TTV가 빠르지만 TTI까지의 차이가 존재합니다.
 - 검색 엔진 최적화(SEO)에 유리하다는 장점이 있습니다.
 - 서버에서 렌더링하므로 서버 자원을 소모하고 관리 포인트가 늘어난다는 단점이 있습니다.
+
+### SSG (Static Site Generation)
+
+### ISR (Incremental Static Regeneration)

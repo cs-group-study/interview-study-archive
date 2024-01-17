@@ -67,7 +67,7 @@ let과 const는 "블록 스코프(block-scope)"를 가지기 떄문에 호이스
 
 ```js
 function outer() {
-  const value = "closure";
+  const value = 'closure';
 
   return function inner() {
     console.log(value);
@@ -253,7 +253,7 @@ function func() {
 func(); // window
 
 (function func() {
-  "use strict";
+  'use strict';
   console.log(this); // undefined
 })();
 ```
@@ -281,7 +281,7 @@ function Person(name) {
   this.name = name;
 }
 
-const john = new Person("John");
+const john = new Person('John');
 console.log(john.name); // "John"
 ```
 
@@ -312,12 +312,12 @@ function countNumbers(a, b) {
   console.log(`${this.name}: ${a}, ${b}`);
 }
 
-const person = { name: "John" };
+const person = { name: 'John' };
 countNumbers.apply(person, [1, 2]); // "John: 1, 2"
 countNumbers.call(person, 1, 2); // "John: 1, 2"
 countNumbers.bind(person)(1, 2); // "John: 1, 2"
 
-const anotherPerson = { name: "Smith" };
+const anotherPerson = { name: 'Smith' };
 countNumbers.bind(person).call(anotherPerson, 1, 2); // "John: 1, 2" => bind로 인해 this가 person으로 고정됨
 ```
 
@@ -447,11 +447,11 @@ obj.arrowForEach();
 
 ```js
 // 일반
-target.addEventListener("click", function (e) {
+target.addEventListener('click', function (e) {
   console.log(this); // target === e.target
 });
 // 화살표
-target.addEventListener("click", (e) => {
+target.addEventListener('click', (e) => {
   console.log(this); // window
 });
 
@@ -581,15 +581,28 @@ target.click();
   어떤 모듈이 수정되면 vite는 그저 수정된 모듈과 관련된 부분만을 교체할 뿐이고, 브라우저에서 해당 모듈을 요청하면 교체된 모듈을 전달할 뿐입니다. 전 과정에서 완벽하게 ESM을 이용하기에, 앱 사이즈가 커져도 HMR을 포함한 갱신 시간에는 영향을 끼치지 않습니다.
 
 - ### Caching
-  또한 vite는 HTTP 헤더를 활용하여 전체 페이지의 로드 속도를 높입니다. 필요에 따라 소스 코드는 304 Not Modified로, 디펜던시는 Cache-Control: max-age=31536000,immutable을 이용해 캐시됩니다. 이렇게 함으로써 요청 횟수를 최소화하여 페이지 로딩을 빠르게 만들어 줍니다.
+  또한 vite는 HTTP 헤더를 활용하여 전체 페이지의 로드 속도를 높입니다. 필요에 따라 소스 코드는 304 Not Modified로, 디펜던시는 Cache-Control: max-age=31536000,immutable을 이용해 캐시됩니다. 이렇게 함으로써 요청 횟수를 최소화하여 페이지 로딩을 빠르게 만들어 줍니다.처
 
 ## ❓이벤트 버블링에 대해 설명해 주세요.
 
-이벤트 버블링이란, 특정 화면 요소에서 이벤트가 발생했을 때 해당 이벤트가 더 상위의 요소들로 전달되는 특성을 의미합니다. 원치 않는 이벤트를 막기 위해서는 두 가지 함수가 있다.
+이벤트 버블링이란, 특정 화면 요소에서 이벤트가 발생했을 때 해당 이벤트가 더 상위의 요소들로 전달되는 특성을 의미합니다.
+이벤트 버블링은 이벤트가 전파되는 동안 부모 요소에서도 이벤트를 감지할 수 있다는 장점이 있습니다. 즉, 이벤트를 처리하는 핸들러 함수를 부모 요소에 등록해놓으면, 자식 요소에서 발생한 이벤트도 모두 처리할 수 있습니다. 이를 활용하면, 여러 개의 하위 요소에서 발생하는 이벤트를 하나의 이벤트 핸들러로 바인딩하는 이벤트 위임 처리를 할 수 있습니다.
+
+원치 않는 이벤트를 막기 위해서는 두 가지 함수가 있다.
 
 `event.stopPropagation()` : 현재 이벤트가 캡처링 / 버블링 단계에서 더 이상 전파되지 않도록 방지.
 
 `event.stopImmediatePropagation()` : stopPropagation과 마찬가지로 이벤트가 캡처링 / 버블링 단계에서 전파되지 않도록 방지하고 추가로, 동일한 요소에서 발생한 동일한 이벤트에 대한 또 다른 이벤트 핸들러의 실행도 막는다.
+
+### 이벤트 흐름
+
+공식적으론 총 3개의 이벤트 흐름이 있지만, 이벤트가 실제 타깃 요소에 전달되는 단계인 ‘타깃 단계’(두 번째 단계)는 별도로 처리되지 않습니다. 캡처링과 버블링 단계의 핸들러는 타깃 단계에서 트리거됩니다.
+
+1. 캡처링 단계 – 이벤트가 하위 요소로 전파되는 단계
+2. 타깃 단계 – 이벤트가 실제 타깃 요소에 전달되는 단계
+3. 버블링 단계 – 이벤트가 상위 요소로 전파되는 단계
+
+[자세한 내용](https://ko.javascript.info/bubbling-and-capturing)
 
 ### 이벤트 위임(Event Delegation)
 
